@@ -154,6 +154,6 @@ app.post('/api/register', async (req, res) => {
 initializeDB().then(() => {
     app.listen(port, () => {
         console.log(`Server is running on http://localhost:${port}`);
-        console.log(`Access the registration form at http://localhost:${port}/technofest.html`);
+        console.log(`Access the registration form at http://localhost:${port}/index.html`);
     });
 });
