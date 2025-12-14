@@ -729,6 +729,21 @@
             justify-content: center;
         }
 
+        /* Faded Background Logo Behind Black Hole */
+        .loader-bg-logo {
+            position: absolute;
+            width: 400px;
+            /* Much larger than the black hole */
+            height: 400px;
+            opacity: 0.1;
+            /* Very faint/translucent */
+            z-index: 1;
+            /* Behind everything */
+            animation: spin-disk 20s linear infinite reverse;
+            /* Slow spin */
+            pointer-events: none;
+        }
+
         .black-hole {
             position: absolute;
             width: 100%;
@@ -830,6 +845,9 @@
     <!-- Loading Screen -->
     <div id="loading-screen">
         <div class="black-hole-container">
+            <!-- Background Translucent Logo -->
+            <img src="images/Department of Info Tech.svg" alt="CS Dept" class="loader-bg-logo">
+
             <div class="accretion-disk"></div>
             <div class="accretion-disk-2"></div>
             <div class="black-hole"></div>
