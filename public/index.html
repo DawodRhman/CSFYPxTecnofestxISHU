@@ -781,6 +781,33 @@
                     </button>
                 </div>
 
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center ml-4">
+                    <button id="mobile-menu-btn" class="text-white hover:text-neon-blue focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu (Hidden by default) -->
+        <div id="mobile-menu"
+            class="hidden md:hidden bg-gray-900 border-b border-neon-blue absolute top-16 left-0 right-0 z-40 shadow-2xl">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-center">
+                <button onclick="navigate('home'); toggleMobileMenu()"
+                    class="block w-full px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 transition">Home</button>
+                <button onclick="navigate('about'); toggleMobileMenu()"
+                    class="block w-full px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 transition">About</button>
+                <button onclick="navigate('events'); toggleMobileMenu()"
+                    class="block w-full px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 transition">Events</button>
+                <button onclick="navigate('schedule'); toggleMobileMenu()"
+                    class="block w-full px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 transition">Schedule</button>
+                <button onclick="navigate('blog'); toggleMobileMenu()"
+                    class="block w-full px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 transition">Blog</button>
+                <button onclick="navigate('register'); toggleMobileMenu()"
+                    class="block w-full px-3 py-2 rounded-md text-base font-bold text-neon-green hover:bg-gray-700 transition mt-2 border border-neon-green">Register
+                    Now</button>
             </div>
         </div>
     </nav>
@@ -1704,10 +1731,32 @@
             if (select) select.value = eventId;
         }
 
+        // MOBILE MENU TOGGLE FUNCTION
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const btnIcon = document.querySelector('#mobile-menu-btn i');
+
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                btnIcon.classList.remove('fa-bars');
+                btnIcon.classList.add('fa-times');
+            } else {
+                menu.classList.add('hidden');
+                btnIcon.classList.remove('fa-times');
+                btnIcon.classList.add('fa-bars');
+            }
+        }
+
         // INITIALIZE APP
         window.onload = () => {
             const idBox = document.getElementById('user-id-display');
             if (idBox) idBox.textContent = `Client ID: ${window.userId}`;
+
+            // Mobile Menu Toggle
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            if (mobileBtn) {
+                mobileBtn.addEventListener('click', toggleMobileMenu);
+            }
 
             // Show home page by default
             navigate('home');
