@@ -3,6 +3,9 @@ const { Pool } = require('pg');
 const dotenv = require('dotenv');
 const cors = require('cors');
 
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+
 // Load environment variables from .env file
 dotenv.config();
 
@@ -18,6 +21,17 @@ const pool = new Pool({
 });
 
 // --- Middleware ---
+// Security Headers
+app.use(helmet());
+
+// Rate Limiting
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 10, // Limit each IP to 10 requests per windowMs
+    message: { error: 'Too many registration attempts, please try again later.' }
+});
+app.use('/api/register', limiter);
+
 // Using CORS allows your local front-end (if running on a different port) to talk to the server
 app.use(cors());
 app.use(express.json());

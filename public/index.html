@@ -1620,6 +1620,14 @@
             event.preventDefault();
 
             const form = event.target;
+            const submitBtn = form.querySelector('button[type="submit"]');
+
+            // Disable button and show loading state
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Processing...';
+                submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            }
 
             const data = {
                 name: form['name'].value.trim(),
@@ -1636,6 +1644,12 @@
             // Required validation
             for (const key in data) {
                 if (!data[key] && key !== 'team') {
+                    // Re-enable button on validation failure
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Submit Registration';
+                        submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    }
                     return showNotification(
                         'Missing Fields ⚠️',
                         'Please complete all required fields.',
@@ -1674,6 +1688,13 @@
                     'Unable to contact the server. Make sure the backend is running.',
                     false
                 );
+            } finally {
+                // Re-enable button in all cases
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Submit Registration';
+                    submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
             }
         }
 
