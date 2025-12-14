@@ -21,8 +21,8 @@ const pool = new Pool({
 // Using CORS allows your local front-end (if running on a different port) to talk to the server
 app.use(cors());
 app.use(express.json());
-// Serve static files (ensure your HTML file is accessible)
-app.use(express.static(__dirname));
+
+// Note: Static files are served by Vercel's CDN, not this Express app.
 
 
 // Function to check/create the 'registrations' table
