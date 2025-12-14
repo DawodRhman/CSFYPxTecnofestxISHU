@@ -882,9 +882,59 @@
         .accretion-disk-2,
         .loader-logo,
         .hero-planet,
-        .planet-orbit {
+        .planet-orbit,
+        .shooting-star,
+        .asteroid {
             will-change: transform;
             transform: translateZ(0);
+        }
+
+        /* Shooting Star Logo Styles */
+        .shooting-star {
+            position: absolute;
+            width: 80px;
+            height: auto;
+            opacity: 0.8;
+            filter: drop-shadow(0 0 10px #fff);
+            z-index: 15;
+            pointer-events: none;
+            animation: shoot-across 2s linear forwards;
+        }
+
+        @keyframes shoot-across {
+            0% {
+                transform: translateX(-100vw) translateY(0) rotate(0deg) scale(0.5);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateX(100vw) translateY(100px) rotate(360deg) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        /* Background Asteroid Styles */
+        .asteroid {
+            position: fixed;
+            background-color: #333;
+            /* Fallback */
+            background-image: url('images/Technofest.png');
+            /* Using logo as "asteroid" texture for now, or just rock shape */
+            background-size: cover;
+            border-radius: 50%;
+            opacity: 0.15;
+            z-index: -2;
+            pointer-events: none;
+            filter: grayscale(100%) contrast(150%);
+            box-shadow: inset 5px 5px 15px rgba(0, 0, 0, 0.8);
         }
     </style>
 </head>
@@ -897,14 +947,16 @@
 
     <!-- Loading Screen -->
     <div id="loading-screen">
+        <div id="shooting-stars-container"
+            class="absolute inset-0 w-full h-full pointer-events-none z-20 overflow-hidden"></div>
         <div class="black-hole-container">
             <!-- Background Translucent Logo -->
-            <img src="images/Department of Info Tech.svg" alt="CS Dept" class="loader-bg-logo">
+            <img src="images/Department of Info Tech.svg" class="loader-bg-logo" alt="CS Dept">
 
             <div class="accretion-disk"></div>
             <div class="accretion-disk-2"></div>
             <div class="black-hole"></div>
-            <img src="images/Technofest.png" alt="Teknofest" class="loader-logo">
+            <img src="images/Technofest.png" class="loader-logo" alt="Teknofest">
         </div>
         <div class="loading-text">Initializing Cosmos...</div>
     </div>
@@ -1966,6 +2018,9 @@
             const regForm = document.getElementById('registration-form');
             if (regForm) regForm.addEventListener('submit', handleRegistration);
 
+            // Start shooting stars immediately
+            initShootingStars();
+
             // Hide Loading Screen with delay for smoothness
             setTimeout(() => {
                 const loader = document.getElementById('loading-screen');
@@ -1978,10 +2033,94 @@
                         document.body.classList.remove('overflow-hidden'); // Enable scrolling
                         // Slide in navbar
                         if (navbar) navbar.classList.remove('-translate-y-full');
+
+                        // Start spawning background asteroids after loader is gone
+                        initAsteroids();
                     }, 800);
                 }
             }, 2500); // 2.5s simulated loading time
+
         };
+
+        // SHOOTING STARS LOGIC
+        function initShootingStars() {
+            const container = document.getElementById('shooting-stars-container');
+            if (!container) return;
+
+            const logos = [
+                'images/ACM.jpg',
+                'images/IEEE.jpg',
+                'images/Department of Info Tech.svg'
+            ];
+
+            const spawnStar = () => {
+                if (document.getElementById('loading-screen').style.display === 'none') return;
+
+                const star = document.createElement('img');
+                const randomLogo = logos[Math.floor(Math.random() * logos.length)];
+                star.src = randomLogo;
+                star.className = 'shooting-star'; // fixed class name
+
+                // Randomize start position
+                const startY = Math.random() * window.innerHeight * 0.5; // Top half
+                star.style.top = `${startY}px`;
+                star.style.left = '-100px';
+
+                // Random duration
+                const duration = 1.5 + Math.random();
+                star.style.animationDuration = `${duration}s`;
+
+                container.appendChild(star);
+
+                // Cleanup
+                setTimeout(() => { star.remove(); }, duration * 1000);
+
+                // Schedule next spawn
+                setTimeout(spawnStar, 500 + Math.random() * 1000);
+            };
+
+            spawnStar();
+        }
+
+        // BACKGROUND ASTEROIDS LOGIC
+        function initAsteroids() {
+            const container = document.body;
+            const asteroidCount = 8; // Adjust for density
+
+            for (let i = 0; i < asteroidCount; i++) {
+                createAsteroid(container);
+            }
+        }
+
+        function createAsteroid(container) {
+            const asteroid = document.createElement('div');
+            asteroid.className = 'asteroid';
+
+            const size = 20 + Math.random() * 60; // 20px to 80px
+            asteroid.style.width = `${size}px`;
+            asteroid.style.height = `${size}px`;
+
+            // Random position
+            asteroid.style.left = `${Math.random() * 100}vw`;
+            asteroid.style.top = `${Math.random() * 100}vh`;
+
+            // Random float animation
+            const duration = 20 + Math.random() * 40; // 20s to 60s
+            const xMove = (Math.random() - 0.5) * 200; // Move range
+            const yMove = (Math.random() - 0.5) * 200;
+
+            asteroid.animate([
+                { transform: `translate(0, 0) rotate(0deg)` },
+                { transform: `translate(${xMove}px, ${yMove}px) rotate(360deg)` }
+            ], {
+                duration: duration * 1000,
+                iterations: Infinity,
+                direction: 'alternate',
+                easing: 'ease-in-out'
+            });
+
+            container.appendChild(asteroid);
+        }
 
     </script>
 </body>
