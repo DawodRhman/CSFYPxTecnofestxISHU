@@ -51,21 +51,17 @@
                 550px 550px, 450px 450px, 350px 350px, 250px 250px, 150px 150px,
                 550px 550px, 450px 450px, 350px 350px, 250px 250px, 150px 150px,
                 300px 300px, 400px 400px, 500px 500px;
-            animation: twinkle 15s linear infinite;
+            background-size:
+                100% 100%,
+                100% 100%,
+                550px 550px, 450px 450px, 350px 350px, 250px 250px, 150px 150px,
+                550px 550px, 450px 450px, 350px 350px, 250px 250px, 150px 150px,
+                300px 300px, 400px 400px, 500px 500px;
+            /* Animation removed for professional look */
             color: #E0F2FE;
             line-height: 1.6;
             padding-top: 5rem;
             min-height: 100vh;
-        }
-
-        @keyframes twinkle {
-            0% {
-                background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
-            }
-
-            100% {
-                background-position: 0 0, 0 0, -10px -10px, -20px -20px, 10px 10px, 20px 20px, -15px 15px, 15px -15px, 30px 0, 0 30px, -30px -30px, 50px 20px, -40px 10px, 25px -25px;
-            }
         }
 
 
@@ -838,125 +834,30 @@
             text-rendering: optimizeLegibility;
         }
 
-        /* Infinity Illusion Grid */
-        .infinity-grid {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 200%;
-            height: 200%;
-            background-image:
-                linear-gradient(rgba(56, 189, 248, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(56, 189, 248, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            transform: perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px);
-            animation: grid-move 20s linear infinite;
-            z-index: -1;
-            pointer-events: none;
-            opacity: 0.4;
-        }
-
-        .infinity-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at center, transparent 0%, #000 80%);
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        @keyframes grid-move {
-            0% {
-                transform: perspective(500px) rotateX(60deg) translateY(0) translateZ(-200px);
-            }
-
-            100% {
-                transform: perspective(500px) rotateX(60deg) translateY(50px) translateZ(-200px);
-            }
-        }
-
         /* Hardware Acceleration Hints */
         .accretion-disk,
         .accretion-disk-2,
         .loader-logo,
         .hero-planet,
-        .planet-orbit,
-        .shooting-star,
-        .asteroid {
+        .planet-orbit {
             will-change: transform;
             transform: translateZ(0);
-        }
-
-        /* Shooting Star Logo Styles */
-        .shooting-star {
-            position: absolute;
-            width: 80px;
-            height: auto;
-            opacity: 0.8;
-            filter: drop-shadow(0 0 10px #fff);
-            z-index: 15;
-            pointer-events: none;
-            animation: shoot-across 2s linear forwards;
-        }
-
-        @keyframes shoot-across {
-            0% {
-                transform: translateX(-100vw) translateY(0) rotate(0deg) scale(0.5);
-                opacity: 0;
-            }
-
-            10% {
-                opacity: 1;
-            }
-
-            90% {
-                opacity: 1;
-            }
-
-            100% {
-                transform: translateX(100vw) translateY(100px) rotate(360deg) scale(1.2);
-                opacity: 0;
-            }
-        }
-
-        /* Background Asteroid Styles */
-        .asteroid {
-            position: fixed;
-            background-color: #333;
-            /* Fallback */
-            background-image: url('images/Technofest.png');
-            /* Using logo as "asteroid" texture for now, or just rock shape */
-            background-size: cover;
-            border-radius: 50%;
-            opacity: 0.15;
-            z-index: -2;
-            pointer-events: none;
-            filter: grayscale(100%) contrast(150%);
-            box-shadow: inset 5px 5px 15px rgba(0, 0, 0, 0.8);
         }
     </style>
 </head>
 
 <body class="min-h-screen overflow-hidden">
 
-    <!-- Infinity Background -->
-    <div class="infinity-grid"></div>
-    <div class="infinity-overlay"></div>
-
     <!-- Loading Screen -->
     <div id="loading-screen">
-        <div id="shooting-stars-container"
-            class="absolute inset-0 w-full h-full pointer-events-none z-20 overflow-hidden"></div>
         <div class="black-hole-container">
             <!-- Background Translucent Logo -->
-            <img src="images/Department of Info Tech.svg" class="loader-bg-logo" alt="CS Dept">
+            <img src="images/Department of Info Tech.svg" alt="CS Dept" class="loader-bg-logo">
 
             <div class="accretion-disk"></div>
             <div class="accretion-disk-2"></div>
             <div class="black-hole"></div>
-            <img src="images/Technofest.png" class="loader-logo" alt="Teknofest">
+            <img src="images/Technofest.png" alt="Teknofest" class="loader-logo">
         </div>
         <div class="loading-text">Initializing Cosmos...</div>
     </div>
@@ -1329,27 +1230,46 @@
                 <!-- Organizers & Partners -->
                 <h3 class="text-4xl font-bold neon-text-green mb-6 border-t pt-8 border-neon-blue">Our Organizers &
                     Partners</h3>
-                <div class="grid md:grid-cols-4 gap-8">
+                <div class="grid md:grid-cols-4 lg:grid-cols-6 gap-8 justify-center">
+                    <!-- CS Department (Organizer) -->
+                    <div class="heavenly-card group">
+                        <img src="images/Department of Info Tech.svg" alt="Dept of CS"
+                            style="background: rgba(255,255,255,0.1); padding: 5px;">
+                        <p class="text-xl font-bold neon-text-blue mt-4 group-hover:text-white transition">Dept of CS
+                        </p>
+                        <span class="text-xs text-blue-300 mt-2 opacity-0 group-hover:opacity-100 transition">Main
+                            Organizer</span>
+                    </div>
+                    <!-- Fatima Jinnah (Organizer) -->
+                    <div class="heavenly-card group">
+                        <img src="images/fatima.jpeg" alt="Fatima Jinnah"
+                            style="border-radius: 50%; object-fit: cover;">
+                        <p class="text-xl font-bold neon-text-green mt-4 group-hover:text-white transition">Fatima
+                            Jinnah</p>
+                        <span
+                            class="text-xs text-blue-300 mt-2 opacity-0 group-hover:opacity-100 transition">Organizer</span>
+                    </div>
+
                     <!-- ACM -->
                     <div class="heavenly-card group">
                         <img src="images/ACM.jpg" alt="ACM SHU" class="acm-logo-zoom">
                         <p class="text-xl font-bold neon-text-green mt-4 group-hover:text-white transition">ACM SHU</p>
                         <span
-                            class="text-xs text-blue-300 mt-2 opacity-0 group-hover:opacity-100 transition">Organizer</span>
+                            class="text-xs text-blue-300 mt-2 opacity-0 group-hover:opacity-100 transition">Partner</span>
                     </div>
                     <!-- IEEE -->
                     <div class="heavenly-card group">
                         <img src="images/IEEE.jpg" alt="IEEE Computing Society">
                         <p class="text-xl font-bold neon-text-blue mt-4 group-hover:text-white transition">IEEE CS</p>
                         <span
-                            class="text-xs text-blue-300 mt-2 opacity-0 group-hover:opacity-100 transition">Organizer</span>
+                            class="text-xs text-blue-300 mt-2 opacity-0 group-hover:opacity-100 transition">Partner</span>
                     </div>
                     <!-- CS Cube -->
                     <div class="heavenly-card group">
                         <img src="images/cube.jpg" alt="CS Cube SHU">
                         <p class="text-xl font-bold neon-text-green mt-4 group-hover:text-white transition">CS Cube</p>
                         <span
-                            class="text-xs text-blue-300 mt-2 opacity-0 group-hover:opacity-100 transition">Organizer</span>
+                            class="text-xs text-blue-300 mt-2 opacity-0 group-hover:opacity-100 transition">Partner</span>
                     </div>
                     <!-- Youth Intelligensia -->
                     <div class="heavenly-card group">
@@ -2018,9 +1938,6 @@
             const regForm = document.getElementById('registration-form');
             if (regForm) regForm.addEventListener('submit', handleRegistration);
 
-            // Start shooting stars immediately
-            initShootingStars();
-
             // Hide Loading Screen with delay for smoothness
             setTimeout(() => {
                 const loader = document.getElementById('loading-screen');
@@ -2033,94 +1950,10 @@
                         document.body.classList.remove('overflow-hidden'); // Enable scrolling
                         // Slide in navbar
                         if (navbar) navbar.classList.remove('-translate-y-full');
-
-                        // Start spawning background asteroids after loader is gone
-                        initAsteroids();
                     }, 800);
                 }
             }, 2500); // 2.5s simulated loading time
-
         };
-
-        // SHOOTING STARS LOGIC
-        function initShootingStars() {
-            const container = document.getElementById('shooting-stars-container');
-            if (!container) return;
-
-            const logos = [
-                'images/ACM.jpg',
-                'images/IEEE.jpg',
-                'images/Department of Info Tech.svg'
-            ];
-
-            const spawnStar = () => {
-                if (document.getElementById('loading-screen').style.display === 'none') return;
-
-                const star = document.createElement('img');
-                const randomLogo = logos[Math.floor(Math.random() * logos.length)];
-                star.src = randomLogo;
-                star.className = 'shooting-star'; // fixed class name
-
-                // Randomize start position
-                const startY = Math.random() * window.innerHeight * 0.5; // Top half
-                star.style.top = `${startY}px`;
-                star.style.left = '-100px';
-
-                // Random duration
-                const duration = 1.5 + Math.random();
-                star.style.animationDuration = `${duration}s`;
-
-                container.appendChild(star);
-
-                // Cleanup
-                setTimeout(() => { star.remove(); }, duration * 1000);
-
-                // Schedule next spawn
-                setTimeout(spawnStar, 500 + Math.random() * 1000);
-            };
-
-            spawnStar();
-        }
-
-        // BACKGROUND ASTEROIDS LOGIC
-        function initAsteroids() {
-            const container = document.body;
-            const asteroidCount = 8; // Adjust for density
-
-            for (let i = 0; i < asteroidCount; i++) {
-                createAsteroid(container);
-            }
-        }
-
-        function createAsteroid(container) {
-            const asteroid = document.createElement('div');
-            asteroid.className = 'asteroid';
-
-            const size = 20 + Math.random() * 60; // 20px to 80px
-            asteroid.style.width = `${size}px`;
-            asteroid.style.height = `${size}px`;
-
-            // Random position
-            asteroid.style.left = `${Math.random() * 100}vw`;
-            asteroid.style.top = `${Math.random() * 100}vh`;
-
-            // Random float animation
-            const duration = 20 + Math.random() * 40; // 20s to 60s
-            const xMove = (Math.random() - 0.5) * 200; // Move range
-            const yMove = (Math.random() - 0.5) * 200;
-
-            asteroid.animate([
-                { transform: `translate(0, 0) rotate(0deg)` },
-                { transform: `translate(${xMove}px, ${yMove}px) rotate(360deg)` }
-            ], {
-                duration: duration * 1000,
-                iterations: Infinity,
-                direction: 'alternate',
-                easing: 'ease-in-out'
-            });
-
-            container.appendChild(asteroid);
-        }
 
     </script>
 </body>
