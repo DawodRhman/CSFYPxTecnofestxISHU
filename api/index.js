@@ -59,6 +59,7 @@ function mapEventValueToName(eventValue) {
         case 'pitch-your-idea': return 'Pitch Your Idea (Fee: 1000)';
         case 'ctf': return 'Capture the Flag (Fee: 200)';
         case 'data-insights': return 'Data Driven Insights (Fee: 200)';
+        case 'hackathon': return 'Hackathon (Fee: 500)';
         default: return 'Unknown Event';
     }
 }
