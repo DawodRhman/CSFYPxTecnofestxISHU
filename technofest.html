@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teknofest-SHU 2025</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        /* ... existing styles ... */
+
+        :root {
+            --neon-primary: #60A5FA;
+            /* Light Blue */
+            --neon-secondary: #38BDF8;
+            /* Sky Blue */
+            --glass-bg: rgba(15, 23, 42, 0.6);
+            --glass-border: rgba(56, 189, 248, 0.3);
+            --dark-bg: #0f172a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(56, 189, 248, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 85% 30%, rgba(96, 165, 250, 0.15) 0%, transparent 40%),
+                radial-gradient(1px 1px at 10% 10%, #fff, transparent),
+                radial-gradient(1px 1px at 20% 20%, #fff, transparent),
+                radial-gradient(1px 1px at 30% 30%, #fff, transparent),
+                radial-gradient(1px 1px at 40% 40%, #fff, transparent),
+                radial-gradient(1px 1px at 50% 50%, #fff, transparent),
+                radial-gradient(1px 1px at 60% 60%, #fff, transparent),
+                radial-gradient(1px 1px at 70% 70%, #fff, transparent),
+                radial-gradient(1px 1px at 80% 80%, #fff, transparent),
+                radial-gradient(1px 1px at 90% 90%, #fff, transparent),
+                radial-gradient(2px 2px at 25% 65%, rgba(255, 255, 255, 0.8), transparent),
+                radial-gradient(2px 2px at 75% 15%, rgba(255, 255, 255, 0.8), transparent),
+                radial-gradient(1.5px 1.5px at 45% 85%, rgba(255, 255, 255, 0.7), transparent);
+            background-size:
+                100% 100%,
+                100% 100%,
+                550px 550px, 450px 450px, 350px 350px, 250px 250px, 150px 150px,
+                550px 550px, 450px 450px, 350px 350px, 250px 250px, 150px 150px,
+                300px 300px, 400px 400px, 500px 500px;
+            animation: twinkle 15s linear infinite;
+            color: #E0F2FE;
+            line-height: 1.6;
+            padding-top: 5rem;
+            min-height: 100vh;
+        }
+
+        @keyframes twinkle {
+            0% {
+                background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
+            }
+
+            100% {
+                background-position: 0 0, 0 0, -10px -10px, -20px -20px, 10px 10px, 20px 20px, -15px 15px, 15px -15px, 30px 0, 0 30px, -30px -30px, 50px 20px, -40px 10px, 25px -25px;
+            }
+        }
+
+
+
+        .neon-text-green {
+            color: var(--neon-secondary);
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+
+        .neon-text-blue {
+            color: var(--neon-primary);
+            text-shadow: 0 0 10px rgba(96, 165, 250, 0.5);
+        }
+
+        /* Modern Card Design */
+        .modern-card {
+            background: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 1rem;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modern-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.5), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .modern-card:hover {
+            transform: translateY(-8px);
+            background: rgba(30, 41, 59, 0.7);
+            border-color: rgba(56, 189, 248, 0.5);
+            box-shadow:
+                0 15px 30px -10px rgba(0, 0, 0, 0.5),
+                0 0 20px rgba(56, 189, 248, 0.2);
+        }
+
+        .modern-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-image-container {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .modern-card:hover .card-image {
+            transform: scale(1.1);
+        }
+
+        .card-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--neon-secondary);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            margin-bottom: 1rem;
+            width: fit-content;
+        }
+
+        .card-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Glassmorphism Classes - Updated */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .bg-gray-900 {
+            background-color: rgba(30, 41, 59, 0.4) !important;
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--glass-border);
+        }
+
+        .neon-border {
+            border-color: var(--neon-secondary);
+            box-shadow: 0 0 8px var(--neon-secondary);
+        }
+
+        .neon-button {
+            background-color: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: var(--neon-secondary);
+            transition: all 0.3s ease;
+            text-shadow: 0 0 5px rgba(56, 189, 248, 0.5);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .neon-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background: var(--neon-secondary);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+
+        .neon-button:hover::before {
+            width: 100%;
+        }
+
+        .neon-button:hover {
+            color: #0f172a;
+            box-shadow: 0 0 20px var(--neon-secondary);
+            border-color: var(--neon-secondary);
+        }
+
+        .neon-input {
+            background-color: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--glass-border);
+            color: #BAE6FD;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .neon-input:focus {
+            border-color: var(--neon-secondary);
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+            outline: none;
+            background-color: rgba(15, 23, 42, 0.8);
+        }
+
+        .page-section {
+            animation: fadeIn 0.5s ease-in-out;
+            padding-bottom: 2rem;
+        }
+
+        /* Asteroid Card Theme (Competitions) */
+        .asteroid-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+            clip-path: polygon(20px 0, 100% 0,
+                    100% calc(100% - 20px), calc(100% - 20px) 100%,
+                    0 100%, 0 20px);
+            border-left: 1px solid rgba(56, 189, 248, 0.3);
+            border-top: 1px solid rgba(56, 189, 248, 0.3);
+            position: relative;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8);
+        }
+
+        .asteroid-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, transparent 50%, rgba(56, 189, 248, 0.2) 50%);
+            z-index: 1;
+        }
+
+        .asteroid-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.9), 0 0 15px rgba(56, 189, 248, 0.2);
+        }
+
+        .asteroid-card .card-image-container {
+            clip-path: polygon(0 0, 100% 0,
+                    100% calc(100% - 20px), 0 100%);
+            border-bottom: 1px solid rgba(56, 189, 248, 0.1);
+        }
+
+        /* Heavenly Body Card Theme (Partners/Sponsors) */
+        .heavenly-card {
+            border-radius: 50%;
+            aspect-ratio: 1/1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: radial-gradient(circle at 30% 30%, rgba(56, 189, 248, 0.1), rgba(15, 23, 42, 0.8));
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            box-shadow:
+                inset -10px -10px 20px rgba(0, 0, 0, 0.5),
+                inset 10px 10px 20px rgba(255, 255, 255, 0.1),
+                0 0 20px rgba(56, 189, 248, 0.1);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+            padding: 1.5rem;
+        }
+
+        .heavenly-card:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow:
+                inset -5px -5px 10px rgba(0, 0, 0, 0.5),
+                inset 5px 5px 10px rgba(255, 255, 255, 0.2),
+                0 0 40px rgba(56, 189, 248, 0.4);
+            border-color: rgba(56, 189, 248, 0.8);
+            z-index: 10;
+        }
+
+        .heavenly-card img {
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.5));
+            transition: transform 0.5s ease;
+        }
+
+        .heavenly-card:hover img {
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        /* Specific zoom for ACM logo to maintain layout but enlarge image visually */
+        .heavenly-card img.acm-logo-zoom {
+            background-color: white;
+            transform: scale(1.25);
+            padding: 2px;
+        }
+
+        .heavenly-card:hover img.acm-logo-zoom {
+            transform: scale(1.35) rotate(-5deg);
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-secondary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--neon-primary);
+        }
+
+        .hidden-section {
+            display: none !important;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo-cluster {
+            display: flex;
+            align-items: center;
+            margin-right: 1rem;
+        }
+
+        /* Navbar Modernization */
+        nav {
+            background: rgba(15, 23, 42, 0.7) !important;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+        }
+
+        .dept-logo {
+            height: 42px;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 0 5px rgba(56, 189, 248, 0.4));
+            transition: transform 0.3s;
+        }
+
+        .dept-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-cluster {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .main-nav-logo {
+            width: 75px;
+            height: 75px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 10px var(--neon-blue));
+            margin: 0 0.8rem;
+            z-index: 10;
+            transition: transform 0.3s;
+        }
+
+        .main-nav-logo:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .side-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .mini-logo {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 1.5px solid var(--neon-secondary);
+            object-fit: cover;
+            background: #000;
+            transition: transform 0.3s;
+        }
+
+        .mini-logo:hover {
+            transform: scale(1.2);
+            z-index: 20;
+            border-color: var(--neon-primary);
+        }
+
+        .nav-brand-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+
+
+
+        .main-img {
+            display: block;
+            margin: 0 auto 2rem auto;
+            max-width: 70%;
+            height: 400px;
+            border-radius: 1rem;
+            margin-bottom: 200px;
+        }
+
+        .move-up {
+            position: relative;
+            top: -200px;
+        }
+
+        @media (max-width: 768px) {
+            .move-up {
+                top: -50px;
+            }
+
+            .main-img {
+                max-width: 90%;
+                height: 300px;
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        /* 3D Hero Solar System - Refined */
+        .hero-3d-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto 50px auto;
+            perspective: 1200px;
+            transform-style: preserve-3d;
+        }
+
+        /* Faded Background Logo */
+        .hero-3d-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 140%;
+            height: 140%;
+            background: url('images/Department of Info Tech.svg') no-repeat center center;
+            background-size: contain;
+            opacity: 0.15;
+            z-index: 0;
+            pointer-events: none;
+            filter: grayscale(100%) brightness(1.5);
+        }
+
+        /* 3D Sun Styles */
+        .hero-sun-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 150px;
+            height: 150px;
+            transform: translate(-50%, -50%);
+            transform-style: preserve-3d;
+            border-radius: 50%;
+            animation: sun-float 6s ease-in-out infinite alternate;
+        }
+
+        .sun-sphere {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .hero-sun-texture {
+            width: 100%;
+            height: 100%;
+            padding: 10px;
+            border-radius: 50%;
+            object-fit: contain;
+            background: radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
+        }
+
+        .sun-overlay {
+            position: absolute;
+            inset: -1px;
+            border-radius: 50%;
+            background:
+                radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.1) 40%, transparent 70%),
+                radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0.2) 90%);
+            box-shadow:
+                inset -5px -5px 15px rgba(255, 255, 255, 0.3),
+                inset 5px 5px 15px rgba(255, 255, 255, 0.6),
+                0 0 40px rgba(255, 255, 255, 0.4),
+                0 0 70px rgba(56, 189, 248, 0.4);
+            pointer-events: none;
+            mix-blend-mode: screen;
+            animation: pulse-sun-glow 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes sun-float {
+            0% {
+                transform: translate(-50%, -50%) translateY(0px) scale(1);
+            }
+
+            100% {
+                transform: translate(-50%, -50%) translateY(-15px) scale(1.05);
+            }
+        }
+
+        @keyframes pulse-sun-glow {
+            from {
+                box-shadow: inset -5px -5px 15px rgba(255, 255, 255, 0.2), 0 0 40px rgba(255, 255, 255, 0.3);
+                opacity: 0.7;
+            }
+
+            to {
+                box-shadow: inset -5px -5px 15px rgba(255, 255, 255, 0.4), 0 0 70px rgba(56, 189, 248, 0.5), 0 0 100px rgba(56, 189, 248, 0.3);
+                opacity: 0.9;
+            }
+        }
+
+        .orbit-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 380px;
+            height: 380px;
+            transform: translate(-50%, -50%) rotateX(75deg);
+            border: 2px dashed rgba(56, 189, 248, 0.3);
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.05);
+            transform-style: preserve-3d;
+        }
+
+        .planets-rotator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 380px;
+            height: 380px;
+            transform: translate(-50%, -50%) rotateX(75deg);
+            transform-style: preserve-3d;
+            animation: hero-orbit-spin 25s linear infinite;
+        }
+
+        @keyframes hero-orbit-spin {
+            from {
+                transform: translate(-50%, -50%) rotateX(75deg) rotateZ(0deg);
+            }
+
+            to {
+                transform: translate(-50%, -50%) rotateX(75deg) rotateZ(360deg);
+            }
+        }
+
+        .hero-planet-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 70px;
+            height: 70px;
+            margin: -35px;
+            transform-style: preserve-3d;
+            border-radius: 50%;
+        }
+
+        /* 3D Sphere Effect Wrapper */
+        .planet-sphere {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: hero-planet-counter 25s linear infinite;
+        }
+
+        /* The Image Texture */
+        .hero-planet {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--neon-secondary);
+            background: #00000000;
+            display: block;
+        }
+
+        /* 3D Gloss/Shadow Overlay */
+        .planet-overlay {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.4) 0%, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 0.6) 100%);
+            box-shadow: inset -5px -5px 15px rgba(0, 0, 0, 0), 0 0 15px var(--neon-secondary);
+            pointer-events: none;
+        }
+
+        /* Planets Positioned at cardinal points (approx 190px radius) */
+        .hp-1 {
+            transform: translateY(-190px);
+        }
+
+        .hp-2 {
+            transform: translateX(190px);
+        }
+
+        .hp-3 {
+            transform: translateY(190px);
+        }
+
+        .hp-4 {
+            transform: translateX(-190px);
+        }
+
+        @keyframes hero-planet-counter {
+            from {
+                transform: rotateZ(360deg) rotateX(-75deg);
+            }
+
+            to {
+                transform: rotateZ(0deg) rotateX(-75deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-3d-container {
+                transform: scale(0.65);
+                margin-bottom: 0px;
+            }
+        }
+
+        /* Asteroid Navigation Button Style */
+        .asteroid-nav-button {
+            position: relative;
+            background: linear-gradient(135deg, rgba(30, 41, 59, 1), rgba(15, 23, 42, 1));
+            color: #ccc;
+            padding: 8px 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.8rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            /* Jagged "rocky" shape */
+            clip-path: polygon(10% 0%, 100% 0%,
+                    95% 50%, 100% 100%,
+                    10% 100%, 0% 50%);
+            border-left: 2px solid rgba(56, 189, 248, 0.5);
+        }
+
+        .asteroid-nav-button:hover {
+            color: var(--neon-secondary);
+            background: linear-gradient(135deg, rgba(40, 50, 70, 1), rgba(20, 30, 50, 1));
+            transform: translateY(-2px);
+            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.6);
+            text-shadow: 0 0 5px var(--neon-secondary);
+        }
+
+        .asteroid-nav-button.active {
+            color: var(--neon-green);
+            border-left-color: var(--neon-green);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+
+    <!-- Notification Modal Structure -->
+    <div id="notification-modal"
+        class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center z-[9999]">
+        <div class="bg-gray-900 p-8 rounded-xl border-2 border-neon-green shadow-2xl max-w-sm w-full text-center">
+            <h3 id="notification-title" class="text-2xl font-bold neon-text-green mb-4">Success!</h3>
+            <p id="notification-message" class="text-gray-300 mb-6"></p>
+            <button onclick="closeNotification()" class="neon-button px-4 py-2 rounded-lg text-sm">Close</button>
+        </div>
+    </div>
+
+
+
+    <!-- Navigation Bar -->
+    <nav
+        class="fixed top-0 left-0 right-0 w-full z-50 bg-black bg-opacity-90 shadow-lg border-b border-opacity-30 border-neon-blue">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+
+                <div class="flex-shrink-0 flex items-center gap-4">
+                    <!-- Department Logo (Far Left) -->
+                    <a href="#" onclick="navigate('home')" class="block">
+                        <img src="images/Department of Info Tech.svg" class="dept-logo" alt="Department of Info Tech">
+                    </a>
+
+                    <!-- Divider -->
+                    <div
+                        class="h-8 w-[1px] bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent hidden sm:block">
+                    </div>
+
+                    <!-- Main Branding Button -->
+                    <button onclick="navigate('home')" class="flex items-center group">
+                        <div class="logo-cluster scale-90 sm:scale-100">
+                            <!-- Main Logo -->
+                            <img src="images/Technofest.png" class="main-nav-logo" alt="Teknofest">
+                        </div>
+
+                        <div class="nav-brand-text text-left ml-1 hidden lg:flex">
+                            <span
+                                class="text-xl font-black tracking-[0.2em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600 group-hover:to-cyan-400 transition-all duration-300">
+                                Teknofest
+                            </span>
+                            <div class="flex flex-col">
+                                <span class="text-[0.6rem] font-medium text-gray-400 tracking-wider uppercase">
+                                    Powered by Dept. of CS
+                                </span>
+                                <span class="text-[0.55rem] font-bold text-cyan-500 tracking-widest uppercase mt-0.5">
+                                    ACM • IEEE • CSCUBE • YI
+                                </span>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="hidden md:flex items-right space-x-4 ml-auto">
+                    <button onclick="navigate('home')" class="asteroid-nav-button">Home</button>
+                    <button onclick="navigate('about')" class="asteroid-nav-button">About</button>
+                    <button onclick="navigate('events')" class="asteroid-nav-button">Events</button>
+                    <button onclick="navigate('schedule')" class="asteroid-nav-button">Schedule</button>
+                    <button onclick="navigate('sponsors')" class="asteroid-nav-button">Sponsors</button>
+                    <button onclick="navigate('blog')" class="asteroid-nav-button">Blog</button>
+                    <button onclick="navigate('register')" class="asteroid-nav-button"
+                        style="border-left-color: var(--neon-green); color: var(--neon-green);">Register Now</button>
+                </div>
+
+                <div class="relative flex items-center ml-auto h-8">
+                    <input type="search" id="search-input" placeholder="Search everything..."
+                        class="w-32 sm:w-48 px-3 py-1 pr-10 text-sm bg-gray-800 text-white border-2 border-gray-700 rounded-lg focus:ring-1 neon-input transition duration-200">
+                    <button id="search-icon-trigger"
+                        class="absolute right-0 top-0 bottom-0 p-2 text-white/70 hover:text-neon-blue transition duration-200 flex items-center justify-center cursor-pointer">
+                        <i class="fas fa-search text-xs"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+
+    <div id="user-id-display" class="text-xs text-right p-1 opacity-70"></div>
+
+    <main class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+
+        <section id="home-page" class="page-section">
+            <header class="text-center py-12 mb-8">
+
+                <!-- 3D Hero Solar System -->
+                <div class="hero-3d-container">
+                    <div class="hero-sun-wrapper">
+                        <div class="sun-sphere">
+                            <img src="images/Technofest.png" class="hero-sun-texture" alt="Sun">
+                            <div class="sun-overlay"></div>
+                        </div>
+                    </div>
+                    <div class="orbit-ring"></div>
+                    <div class="planets-rotator">
+                        <div class="hero-planet-wrapper hp-1">
+                            <div class="planet-sphere">
+                                <img src="images/ACM.jpg" class="hero-planet" alt="ACM">
+                                <div class="planet-overlay"></div>
+                            </div>
+                        </div>
+                        <div class="hero-planet-wrapper hp-2">
+                            <div class="planet-sphere">
+                                <img src="images/IEEE.jpg" class="hero-planet" alt="IEEE">
+                                <div class="planet-overlay"></div>
+                            </div>
+                        </div>
+                        <div class="hero-planet-wrapper hp-3">
+                            <div class="planet-sphere">
+                                <img src="images/cube.jpg" class="hero-planet" alt="CSCUBE">
+                                <div class="planet-overlay"></div>
+                            </div>
+                        </div>
+                        <div class="hero-planet-wrapper hp-4">
+                            <div class="planet-sphere">
+                                <img src="images/image.jpg" class="hero-planet" alt="YI">
+                                <div class="planet-overlay"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="text-lg sm:text-2xl neon-text-blue mt-8">
+                    "Experience an electrifying fusion of technology, creativity, and competition as thousands of
+                    students, startups, researchers, and tech enthusiasts gather to showcase groundbreaking projects and
+                    futuristic solutions."
+                </p>
+                <h2 class="text-4xl font-bold neon-text-blue mb-6">Competitions</h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Speed Programming -->
+                    <div class="asteroid-card group">
+                        <div class="card-image-container">
+                            <img src="images/image.png" class="card-image" alt="Speed Programming">
+                            <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-60">
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-2xl font-bold neon-text-green group-hover:neon-text-blue transition">
+                                    Speed Programming</h3>
+                            </div>
+                            <div class="card-badge">
+                                <i class="fas fa-calendar-alt mr-2"></i> 24-DEC-2025
+                            </div>
+                            <p class="text-sm text-gray-300 mb-6 flex-grow">Race the clock, crack the logic, and code
+                                your way to victory. Speed Programming is pure adrenaline fast thinking.</p>
+
+                            <div class="card-footer">
+                                <div class="flex flex-col">
+                                    <span class="text-xs text-gray-400">Team Size: 2 Max</span>
+                                    <span class="text-xs text-neon-secondary font-bold">Fee: 200 PKR</span>
+                                </div>
+                                <div class="flex gap-3 items-center">
+                                    <a href="pdfs/speed_programming_rulebook.pdf" target="_blank"
+                                        class="text-gray-400 hover:text-white text-xs underline decoration-dotted transition">Rulebook</a>
+                                    <button onclick="navigate('register'); selectEvent('speed-programming')"
+                                        class="neon-button px-4 py-2 text-xs rounded-lg font-bold">Register</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Web Development -->
+                    <div class="asteroid-card group">
+                        <div class="card-image-container">
+                            <img src="images/webdev.jpg" class="card-image" alt="Web Development">
+                            <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-60">
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-2xl font-bold neon-text-green group-hover:neon-text-blue transition">Web
+                                    Development</h3>
+                            </div>
+                            <div class="card-badge">
+                                <i class="fas fa-code mr-2"></i> 24-DEC-2025
+                            </div>
+                            <p class="text-sm text-gray-300 mb-6 flex-grow">Build beautiful, functional, and
+                                blazing-fast digital experiences. Challenge your creativity and technical skill.</p>
+
+                            <div class="card-footer">
+                                <div class="flex flex-col">
+                                    <span class="text-xs text-gray-400">Team Size: 2 Max</span>
+                                    <span class="text-xs text-neon-secondary font-bold">Fee: 200 PKR</span>
+                                </div>
+                                <div class="flex gap-3 items-center">
+                                    <a href="pdfs/web_development_rulebook.pdf" target="_blank"
+                                        class="text-gray-400 hover:text-white text-xs underline decoration-dotted transition">Rulebook</a>
+                                    <button onclick="navigate('register'); selectEvent('web-development')"
+                                        class="neon-button px-4 py-2 text-xs rounded-lg font-bold">Register</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pitch your idea -->
+                    <div class="asteroid-card group">
+                        <div class="card-image-container">
+                            <img src="images/idea.jpg" class="card-image" alt="Pitch your idea">
+                            <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-60">
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-2xl font-bold neon-text-green group-hover:neon-text-blue transition">
+                                    Pitch your idea</h3>
+                            </div>
+                            <div class="card-badge">
+                                <i class="fas fa-lightbulb mr-2"></i> 24-DEC-2025
+                            </div>
+                            <p class="text-sm text-gray-300 mb-6 flex-grow">Step into the spotlight and sell your
+                                vision. Rewards innovation, clarity, and confidence.</p>
+
+                            <div class="card-footer">
+                                <div class="flex flex-col">
+                                    <span class="text-xs text-gray-400">Team Size: 4 Max</span>
+                                    <span class="text-xs text-neon-secondary font-bold">Fee: 1000 PKR</span>
+                                </div>
+                                <div class="flex gap-3 items-center">
+                                    <a href="pdfs/pitch_your_idea_rulebook.pdf" target="_blank"
+                                        class="text-gray-400 hover:text-white text-xs underline decoration-dotted transition">Rulebook</a>
+                                    <button onclick="navigate('register'); selectEvent('pitch-your-idea')"
+                                        class="neon-button px-4 py-2 text-xs rounded-lg font-bold">Register</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Capture the Flag (CTF) -->
+                    <div class="asteroid-card group">
+                        <div class="card-image-container">
+                            <img src="images/ctf.jpg" class="card-image" alt="Capture the Flag">
+                            <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-60">
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-2xl font-bold neon-text-green group-hover:neon-text-blue transition">
+                                    Capture the Flag</h3>
+                            </div>
+                            <div class="card-badge">
+                                <i class="fas fa-user-secret mr-2"></i> 24-DEC-2025
+                            </div>
+                            <p class="text-sm text-gray-300 mb-6 flex-grow">Hack, defend, decode. The ultimate
+                                cybersecurity battleground for the sharpest minds.</p>
+
+                            <div class="card-footer">
+                                <div class="flex flex-col">
+                                    <span class="text-xs text-gray-400">Team Size: 2 Max</span>
+                                    <span class="text-xs text-neon-secondary font-bold">Fee: 200 PKR</span>
+                                </div>
+                                <div class="flex gap-3 items-center">
+                                    <a href="pdfs/ctf_rulebook.pdf" target="_blank"
+                                        class="text-gray-400 hover:text-white text-xs underline decoration-dotted transition">Rulebook</a>
+                                    <button onclick="navigate('register'); selectEvent('ctf')"
+                                        class="neon-button px-4 py-2 text-xs rounded-lg font-bold">Register</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Data Driven insights -->
+                    <div class="asteroid-card group">
+                        <div class="card-image-container">
+                            <img src="images/data.jpg" class="card-image" alt="Data Driven insights">
+                            <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-60">
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-2xl font-bold neon-text-green group-hover:neon-text-blue transition">
+                                    Data Driven Insights</h3>
+                            </div>
+                            <div class="card-badge">
+                                <i class="fas fa-chart-line mr-2"></i> 24-DEC-2025
+                            </div>
+                            <p class="text-sm text-gray-300 mb-6 flex-grow">Turn raw data into powerful decisions.
+                                Analyze, predict, and present meaningful patterns.</p>
+
+                            <div class="card-footer">
+                                <div class="flex flex-col">
+                                    <span class="text-xs text-gray-400">Team Size: 2 Max</span>
+                                    <span class="text-xs text-neon-secondary font-bold">Fee: 200 PKR</span>
+                                </div>
+                                <div class="flex gap-3 items-center">
+                                    <a href="pdfs/ctf_rulebook.pdf" target="_blank"
+                                        class="text-gray-400 hover:text-white text-xs underline decoration-dotted transition">Rulebook</a>
+                                    <button onclick="navigate('register'); selectEvent('data-insights')"
+                                        class="neon-button px-4 py-2 text-xs rounded-lg font-bold">Register</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Organizers & Partners -->
+                <!-- Organizers & Partners -->
+                <h3 class="text-4xl font-bold neon-text-green mb-6 border-t pt-8 border-neon-blue">Our Organizers &
+                    Partners</h3>
+                <div class="grid md:grid-cols-4 gap-8">
+                    <!-- ACM -->
+                    <div class="heavenly-card group">
+                        <img src="images/ACM.jpg" alt="ACM SHU" class="acm-logo-zoom">
+                        <p class="text-xl font-bold neon-text-green mt-4 group-hover:text-white transition">ACM SHU</p>
+                        <span
+                            class="text-xs text-blue-300 mt-2 opacity-0 group-hover:opacity-100 transition">Organizer</span>
+                    </div>
+                    <!-- IEEE -->
+                    <div class="heavenly-card group">
+                        <img src="images/IEEE.jpg" alt="IEEE Computing Society">
+                        <p class="text-xl font-bold neon-text-blue mt-4 group-hover:text-white transition">IEEE CS</p>
+                        <span
+                            class="text-xs text-blue-300 mt-2 opacity-0 group-hover:opacity-100 transition">Organizer</span>
+                    </div>
+                    <!-- CS Cube -->
+                    <div class="heavenly-card group">
+                        <img src="images/cube.jpg" alt="CS Cube SHU">
+                        <p class="text-xl font-bold neon-text-green mt-4 group-hover:text-white transition">CS Cube</p>
+                        <span
+                            class="text-xs text-blue-300 mt-2 opacity-0 group-hover:opacity-100 transition">Organizer</span>
+                    </div>
+                    <!-- Youth Intelligensia -->
+                    <div class="heavenly-card group">
+                        <img src="images/image.jpg" alt="Youth Intelligensia">
+                        <p class="text-xl font-bold neon-text-blue mt-4 group-hover:text-white transition">Youth
+                            Intelligensia</p>
+                        <span
+                            class="text-xs text-blue-300 mt-2 opacity-0 group-hover:opacity-100 transition">Partner</span>
+                    </div>
+                </div>
+        </section>
+
+        <!-- EVENTS PAGE -->
+        <section id="events-page" class="page-section hidden-section">
+            <h2 class="text-5xl font-bold neon-text-blue mb-8 text-center">Events and Competitions</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Pitch Your Idea -->
+                <div class="modern-card group">
+                    <div class="card-image-container">
+                        <img src="images/idea.jpg" class="card-image" alt="Pitch Your Idea">
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-60"></div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="text-2xl font-bold neon-text-green mb-3 group-hover:neon-text-blue transition">Pitch
+                            Your Idea</h3>
+                    </div>
+                </div>
+
+                <!-- Capture The Flag -->
+                <div class="modern-card group">
+                    <div class="card-image-container">
+                        <img src="images/ctf.jpg" class="card-image" alt="Capture The Flag">
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-60"></div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="text-2xl font-bold neon-text-green mb-3 group-hover:neon-text-blue transition">
+                            Capture The Flag (CTF)</h3>
+                    </div>
+                </div>
+
+                <!-- Web Development -->
+                <div class="modern-card group">
+                    <div class="card-image-container">
+                        <img src="images/webdev.jpg" class="card-image" alt="Web Development">
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-60"></div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="text-2xl font-bold neon-text-green mb-3 group-hover:neon-text-blue transition">Web
+                            Development</h3>
+                    </div>
+                </div>
+
+                <!-- Speed Programming -->
+                <div class="modern-card group">
+                    <div class="card-image-container">
+                        <img src="images/image.png" class="card-image" alt="Speed Programming">
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-60"></div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="text-2xl font-bold neon-text-green mb-3 group-hover:neon-text-blue transition">Speed
+                            Programming</h3>
+                    </div>
+                </div>
+
+                <!-- Data Driven Insights -->
+                <div class="modern-card group">
+                    <div class="card-image-container">
+                        <img src="images/data.jpg" class="card-image" alt="Data Driven Insights">
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-60"></div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="text-2xl font-bold neon-text-green mb-3 group-hover:neon-text-blue transition">Data
+                            Driven Insights</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT PAGE -->
+        <section id="about-page" class="page-section py-16 hidden-section">
+            <div class="max-w-6xl mx-auto px-6">
+                <h2 class="text-5xl font-bold neon-text-green mb-12 text-center">Our Vision</h2>
+
+                <div class="bg-gray-900 p-8 rounded-xl border-2 border-neon-blue mb-12 shadow-lg">
+                    <p class="text-lg mb-4 text-gray-300">
+                        Teknofest Pakistan 2025 envisions a nation driven by curiosity, creativity, and technological
+                        excellence. It is a celebration of innovation where students, startups, researchers, and tech
+                        enthusiasts come together to push boundaries, challenge conventions, and turn bold ideas into
+                        reality. The festival provides a dynamic platform for hands-on learning, cutting-edge
+                        competitions, mentorship, and collaboration—fueling the next generation of thinkers, creators,
+                        and leaders. By inspiring curiosity, fostering teamwork, and encouraging problem-solving with
+                        integrity, Teknofest Pakistan empowers young minds to tackle real-world challenges and shape a
+                        sustainable, technology-driven future. Here, innovation meets passion, imagination meets
+                        execution, and Pakistan's brightest talents converge to define the digital future of tomorrow.
+                    </p>
+                    <p class="text-lg mb-4 text-gray-300">
+                        Across categories like Web Development, Speed Programming, Pitch Your Idea, and Capture the Flag
+                        (CTF), participants showcase skills, present visionary solutions, and compete at a national
+                        level.
+                    </p>
+                    <p class="text-lg text-gray-300">
+                        Workshops, mentorship sessions, and networking opportunities inspire participants to push
+                        boundaries, think innovatively, and build solutions that matter.
+                    </p>
+                </div>
+
+                <!-- Festival Highlights -->
+                <h3 class="text-3xl font-bold neon-text-blue mb-8 text-center">Festival Highlights</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="modern-card p-6 group">
+                        <div class="card-content">
+                            <h4 class="text-2xl font-bold neon-text-green mb-3 group-hover:neon-text-blue transition">
+                                Web Development</h4>
+                            <p class="text-gray-400 text-sm">Build digital experiences and showcase your creativity and
+                                coding skills.</p>
+                        </div>
+                    </div>
+                    <div class="modern-card p-6 group">
+                        <div class="card-content">
+                            <h4 class="text-2xl font-bold neon-text-green mb-3 group-hover:neon-text-blue transition">
+                                Speed Programming</h4>
+                            <p class="text-gray-400 text-sm">Rapid-fire coding challenges testing logic, speed, and
+                                precision.</p>
+                        </div>
+                    </div>
+                    <div class="modern-card p-6 group">
+                        <div class="card-content">
+                            <h4 class="text-2xl font-bold neon-text-green mb-3 group-hover:neon-text-blue transition">
+                                Pitch Your Idea</h4>
+                            <p class="text-gray-400 text-sm">Present innovative ideas and solutions in front of judges
+                                and mentors.</p>
+                        </div>
+                    </div>
+                    <div class="modern-card p-6 group">
+                        <div class="card-content">
+                            <h4 class="text-2xl font-bold neon-text-green mb-3 group-hover:neon-text-blue transition">
+                                Capture The Flag (CTF)</h4>
+                            <p class="text-gray-400 text-sm">Test your cybersecurity skills in exciting problem-solving
+                                challenges.</p>
+                        </div>
+                    </div>
+                    <div class="modern-card p-6 group">
+                        <div class="card-content">
+                            <h4 class="text-2xl font-bold neon-text-green mb-3 group-hover:neon-text-blue transition">
+                                Data Driven Insights</h4>
+                            <p class="text-gray-400 text-sm">Turn data into decisions, and insights into impact</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BLOG PAGE -->
+        <section id="blog-page" class="page-section hidden-section">
+            <h2 class="text-5xl font-bold neon-text-blue mb-8 text-center">Blogs</h2>
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <article class="modern-card group">
+                    <div class="card-image-container">
+                        <img src="images/event1.jpg" class="card-image" alt="Blog Image">
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-60"></div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="text-3xl font-bold neon-text-blue mb-2 group-hover:neon-text-green transition">
+                            Unleashing Innovation at Teknofest Pakistan 2025</h3>
+                        <p class="text-gray-300">Pakistan is ready to witness a spectacular fusion of technology,
+                            creativity, and competition at Teknofest Pakistan 2025! This is more than a festival—it's a
+                            movement that empowers students, startups, and tech enthusiasts to dream big, code faster,
+                            and
+                            innovate smarter. From web development challenges and speed programming battles to pitching
+                            groundbreaking ideas and testing cybersecurity skills in CTF competitions, Teknofest offers
+                            a
+                            national platform where talent meets opportunity.
+                            Participants get hands-on experience, mentorship from industry experts, and a chance to
+                            showcase
+                            projects that could shape the country's digital future. Whether you are a coder, designer,
+                            or
+                            innovator, Teknofest Pakistan 2025 is the place to push boundaries, collaborate, and turn
+                            ideas
+                            into reality. Innovation is calling—are you ready to answer?</p>
+                    </div>
+                </article>
+                <article class="modern-card group">
+                    <div class="card-image-container">
+                        <img src="images/event2.jpg" class="card-image" alt="Blog Image">
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-60"></div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="text-3xl font-bold neon-text-blue mb-2 group-hover:neon-text-green transition">Why
+                            Teknofest SHU!!</h3>
+                        <p class="text-gray-300">Teknofest SHU isn't just another university event—it's a launchpad for
+                            innovation, creativity, and real-world problem-solving. At Salim Habib University, Teknofest
+                            provides students, startups, and tech enthusiasts to showcase skills,
+                            collaborate across disciplines, and compete at the highest level.
+                            Why should you care about Teknofest SHU? Because here, ideas meet execution. Whether it's
+                            building futuristic web applications, cracking cybersecurity challenges in a CTF, pitching
+                            game-changing ideas, or analyzing data for actionable insights, every participant gets
+                            hands-on
+                            experience that goes far beyond classroom learning.
+                            It's more than competitions. Teknofest SHU fosters mentorship, networking, and
+                            collaboration.
+                            Students work alongside peers, industry experts, and academic mentors, gaining insights that
+                            could shape careers and open doors to innovation-driven opportunities.
+                            By participating, you join a community of thinkers, creators, and doers—a space where
+                            curiosity
+                            is encouraged, experimentation is celebrated, and every challenge is a chance to grow.
+                            Teknofest
+                            SHU is where your ideas can shine, your skills can flourish, and your potential can turn
+                            into
+                            impact.</p>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Organizers & Partners -->
+            <h3 class="text-4xl font-bold neon-text-green mb-6 border-t pt-8 border-neon-blue">Our Organizers & Partners
+            </h3>
+            <div class="grid md:grid-cols-4 gap-8">
+                <!-- ACM -->
+                <div class="heavenly-card group">
+                    <img src="images/ACM.jpg" alt="ACM SHU" class="acm-logo-zoom">
+                    <p class="text-xl font-bold neon-text-green mt-4 group-hover:text-white transition">ACM SHU</p>
+                    <span
+                        class="text-xs text-blue-300 mt-2 opacity-0 group-hover:opacity-100 transition">Organizer</span>
+                </div>
+                <!-- IEEE -->
+                <div class="heavenly-card group">
+                    <img src="images/IEEE.jpg" alt="IEEE Computing Society">
+                    <p class="text-xl font-bold neon-text-blue mt-4 group-hover:text-white transition">IEEE CS</p>
+                    <span
+                        class="text-xs text-blue-300 mt-2 opacity-0 group-hover:opacity-100 transition">Organizer</span>
+                </div>
+                <!-- CS Cube -->
+                <div class="heavenly-card group">
+                    <img src="images/cube.jpg" alt="CS Cube SHU">
+                    <p class="text-xl font-bold neon-text-green mt-4 group-hover:text-white transition">CS Cube</p>
+                    <span
+                        class="text-xs text-blue-300 mt-2 opacity-0 group-hover:opacity-100 transition">Organizer</span>
+                </div>
+                <!-- Youth Intelligensia -->
+                <div class="heavenly-card group">
+                    <img src="images/image.jpg" alt="Youth Intelligensia">
+                    <p class="text-xl font-bold neon-text-blue mt-4 group-hover:text-white transition">Youth
+                        Intelligensia</p>
+                    <span class="text-xs text-blue-300 mt-2 opacity-0 group-hover:opacity-100 transition">Partner</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCHEDULE PAGE -->
+        <section id="schedule-page" class="page-section hidden-section">
+            <h2 class="text-5xl font-bold neon-text-green mb-8 text-center">Event Schedule</h2>
+            <p class="text-center text-lg neon-text-blue mb-4">FINAL YEAR PROJECT EXHIBITION: FALL 25</p>
+            <p class="text-center text-gray-400 mb-8">In collaboration with <span
+                    class="text-cyan-400 font-semibold">TEKNOFEST PAKISTAN</span> and <span
+                    class="text-cyan-400 font-semibold">YOUTH INTELLIGENTSIA</span></p>
+
+            <div class="max-w-5xl mx-auto glass-panel p-8 rounded-xl border border-neon-blue">
+                <div class="space-y-6">
+                    <div class="border-b border-gray-700 pb-4">
+                        <h3 class="text-2xl neon-text-blue font-bold">24th December 2025 | 09:00 to 04:30</h3>
+                        <p class="text-gray-400">@ Salim Habib University</p>
+                    </div>
+
+                    <!-- Welcome Note -->
+                    <div class="flex flex-col md:flex-row gap-4 items-start border-l-2 border-neon-green pl-4">
+                        <div class="w-36 text-neon-green font-bold shrink-0">09:00 – 09:10</div>
+                        <div>
+                            <h4 class="text-white font-bold text-lg">Welcome Note</h4>
+                            <p class="text-gray-400 text-sm"><i class="fas fa-map-marker-alt mr-2"></i>MBB Auditorium
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- FYP Exhibition -->
+                    <div class="flex flex-col md:flex-row gap-4 items-start border-l-2 border-neon-blue pl-4">
+                        <div class="w-36 text-neon-blue font-bold shrink-0">09:10 – 11:00</div>
+                        <div>
+                            <h4 class="text-white font-bold text-lg">Final Year Project Exhibition and Evaluation</h4>
+                            <p class="text-gray-400 text-sm mb-2"><i class="fas fa-map-marker-alt mr-2"></i>MBB
+                                Auditorium</p>
+                            <ul class="text-gray-300 text-sm list-disc list-inside space-y-1">
+                                <li>FYP II – Semester 8<sup>th</sup></li>
+                                <li>FYP I – Semester 7<sup>th</sup></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Course Projects Exhibition -->
+                    <div class="flex flex-col md:flex-row gap-4 items-start border-l-2 border-neon-green pl-4">
+                        <div class="w-36 text-neon-green font-bold shrink-0">09:30 – 01:00</div>
+                        <div>
+                            <h4 class="text-white font-bold text-lg">Course Projects Exhibition and Evaluation</h4>
+                            <div class="mt-2 space-y-2">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-300">Semester 6<sup>th</sup> & 5<sup>th</sup></span>
+                                    <span class="text-gray-400"><i class="fas fa-map-marker-alt mr-1"></i>MBB
+                                        Auditorium</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-300">Semester 3<sup>rd</sup>, 2<sup>nd</sup></span>
+                                    <span class="text-gray-400"><i class="fas fa-map-marker-alt mr-1"></i>Library
+                                        3<sup>rd</sup> Floor</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-300">Semester 1<sup>st</sup></span>
+                                    <span class="text-gray-400"><i class="fas fa-map-marker-alt mr-1"></i>Library
+                                        4<sup>th</sup> Floor</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Competitions -->
+                    <div class="flex flex-col md:flex-row gap-4 items-start border-l-2 border-cyan-500 pl-4">
+                        <div class="w-36 text-cyan-400 font-bold shrink-0">11:00 – 02:30</div>
+                        <div class="flex-grow">
+                            <h4 class="text-white font-bold text-lg mb-3">Competitions</h4>
+                            <div class="grid gap-2">
+                                <div class="flex justify-between text-sm bg-gray-800/50 p-2 rounded">
+                                    <span class="text-gray-300"><i class="fas fa-lightbulb text-yellow-400 mr-2"></i>1.
+                                        Pitch Your Idea</span>
+                                    <span class="text-gray-400">MBB Auditorium</span>
+                                </div>
+                                <div class="flex justify-between text-sm bg-gray-800/50 p-2 rounded">
+                                    <span class="text-gray-300"><i class="fas fa-code text-green-400 mr-2"></i>2. Speed
+                                        Programming</span>
+                                    <span class="text-gray-400">FBS Computer Lab: 210</span>
+                                </div>
+                                <div class="flex justify-between text-sm bg-gray-800/50 p-2 rounded">
+                                    <span class="text-gray-300"><i class="fas fa-chart-bar text-blue-400 mr-2"></i>3.
+                                        Data Wrangler (Data Eda)</span>
+                                    <span class="text-gray-400">FBS Computer Lab: 210</span>
+                                </div>
+                                <div class="flex justify-between text-sm bg-gray-800/50 p-2 rounded">
+                                    <span class="text-gray-300"><i class="fas fa-flag text-red-400 mr-2"></i>4.
+                                        CTF</span>
+                                    <span class="text-gray-400">FBS Computer Lab: 211</span>
+                                </div>
+                                <div class="flex justify-between text-sm bg-gray-800/50 p-2 rounded">
+                                    <span class="text-gray-300"><i class="fas fa-globe text-purple-400 mr-2"></i>5. Web
+                                        Dev with AI</span>
+                                    <span class="text-gray-400">FBS Computer Lab: 211</span>
+                                </div>
+                                <div class="flex justify-between text-sm bg-gray-800/50 p-2 rounded">
+                                    <span class="text-gray-300"><i
+                                            class="fas fa-laptop-code text-orange-400 mr-2"></i>6. Hackathon</span>
+                                    <span class="text-gray-400">FBS Breakout Room: 213</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Shield Distribution -->
+                    <div class="flex flex-col md:flex-row gap-4 items-start border-l-2 border-neon-blue pl-4">
+                        <div class="w-36 text-neon-blue font-bold shrink-0">11:00 – 01:00</div>
+                        <div>
+                            <h4 class="text-white font-bold text-lg">Shield Distribution to Guest</h4>
+                            <p class="text-gray-400 text-sm"><i class="fas fa-map-marker-alt mr-2"></i>MBB Auditorium
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Namaz and Lunch -->
+                    <div class="flex flex-col md:flex-row gap-4 items-start border-l-2 border-neon-green pl-4">
+                        <div class="w-36 text-neon-green font-bold shrink-0">01:00 – 02:30</div>
+                        <div>
+                            <h4 class="text-white font-bold text-lg">Namaz and Lunch</h4>
+                            <p class="text-gray-400 text-sm"><i class="fas fa-map-marker-alt mr-2"></i>Faculty Lounge –
+                                B01</p>
+                        </div>
+                    </div>
+
+                    <!-- Closing Session -->
+                    <div class="flex flex-col md:flex-row gap-4 items-start border-l-2 border-yellow-500 pl-4">
+                        <div class="w-36 text-yellow-400 font-bold shrink-0">03:30 – 04:30</div>
+                        <div>
+                            <h4 class="text-white font-bold text-lg">Closing Session – Certificates and Winner
+                                Distribution</h4>
+                            <p class="text-gray-400 text-sm"><i class="fas fa-map-marker-alt mr-2"></i>MBB Auditorium
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Collect Items -->
+                    <div class="flex flex-col md:flex-row gap-4 items-start border-l-2 border-gray-500 pl-4">
+                        <div class="w-36 text-gray-400 font-bold shrink-0">02:00 – 04:30</div>
+                        <div>
+                            <h4 class="text-white font-bold text-lg">Collect all items and closing</h4>
+                            <p class="text-gray-400 text-sm"><i class="fas fa-map-marker-alt mr-2"></i>from the MBB Audi
+                                & Library</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SPONSORS PAGE -->
+        <section id="sponsors-page" class="page-section hidden-section">
+            <h2 class="text-5xl font-bold neon-text-blue mb-8 text-center">Our Sponsors</h2>
+            <div class="text-center mb-12">
+                <p class="text-gray-300 text-lg max-w-2xl mx-auto">We are proud to be supported by industry leaders who
+                    believe in the power of student innovation.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto px-4">
+                <!-- Platinum Sponsors -->
+                <div
+                    class="modern-card flex flex-col items-center justify-center h-64 border-2 border-yellow-500 shadow-[0_0_20px_rgba(234,179,8,0.1)] hover:shadow-[0_0_30px_rgba(234,179,8,0.3)] group transition-all duration-300">
+                    <span class="text-yellow-500 font-bold mb-2 uppercase tracking-widest text-xs">Platinum
+                        Sponsor</span>
+                    <h3 class="text-3xl font-bold text-white group-hover:scale-110 transition-transform duration-300">
+                        Google</h3>
+                </div>
+                <div
+                    class="modern-card flex flex-col items-center justify-center h-64 border-2 border-yellow-500 shadow-[0_0_20px_rgba(234,179,8,0.1)] hover:shadow-[0_0_30px_rgba(234,179,8,0.3)] group transition-all duration-300">
+                    <span class="text-yellow-500 font-bold mb-2 uppercase tracking-widest text-xs">Platinum
+                        Sponsor</span>
+                    <h3 class="text-3xl font-bold text-white group-hover:scale-110 transition-transform duration-300">
+                        Microsoft</h3>
+                </div>
+                <div
+                    class="modern-card flex flex-col items-center justify-center h-64 border-2 border-yellow-500 shadow-[0_0_20px_rgba(234,179,8,0.1)] hover:shadow-[0_0_30px_rgba(234,179,8,0.3)] group transition-all duration-300">
+                    <span class="text-yellow-500 font-bold mb-2 uppercase tracking-widest text-xs">Platinum
+                        Sponsor</span>
+                    <h3 class="text-3xl font-bold text-white group-hover:scale-110 transition-transform duration-300">
+                        GitHub</h3>
+                </div>
+
+                <!-- Gold Sponsors -->
+                <div
+                    class="modern-card flex flex-col items-center justify-center h-48 border-2 border-gray-400 shadow-[0_0_20px_rgba(156,163,175,0.1)] hover:shadow-[0_0_30px_rgba(156,163,175,0.3)] group transition-all duration-300">
+                    <span class="text-gray-400 font-bold mb-2 uppercase tracking-widest text-xs">Gold Sponsor</span>
+                    <h3 class="text-2xl font-bold text-white group-hover:scale-110 transition-transform duration-300">
+                        JetBrains</h3>
+                </div>
+                <div
+                    class="modern-card flex flex-col items-center justify-center h-48 border-2 border-gray-400 shadow-[0_0_20px_rgba(156,163,175,0.1)] hover:shadow-[0_0_30px_rgba(156,163,175,0.3)] group transition-all duration-300">
+                    <span class="text-gray-400 font-bold mb-2 uppercase tracking-widest text-xs">Gold Sponsor</span>
+                    <h3 class="text-2xl font-bold text-white group-hover:scale-110 transition-transform duration-300">
+                        Folio3</h3>
+                </div>
+                <div
+                    class="modern-card flex flex-col items-center justify-center h-48 border-2 border-gray-400 shadow-[0_0_20px_rgba(156,163,175,0.1)] hover:shadow-[0_0_30px_rgba(156,163,175,0.3)] group transition-all duration-300">
+                    <span class="text-gray-400 font-bold mb-2 uppercase tracking-widest text-xs">Gold Sponsor</span>
+                    <h3 class="text-2xl font-bold text-white group-hover:scale-110 transition-transform duration-300">
+                        10Pearls</h3>
+                </div>
+            </div>
+
+            <div class="mt-16 text-center">
+                <h3 class="text-2xl font-bold neon-text-green mb-4">Become a Sponsor</h3>
+                <p class="text-gray-400 mb-6">Want to support the next generation of tech innovators?</p>
+                <a href="#" class="neon-button px-6 py-3 rounded-lg text-lg font-bold inline-block">View Sponsorship
+                    Packages</a>
+            </div>
+        </section>
+
+
+        <!-- REGISTER PAGE -->
+        <section id="register-page" class="page-section hidden-section">
+            <h2 class="text-5xl font-bold neon-text-green mb-8 text-center">Competition Registration</h2>
+            <div class="max-w-xl mx-auto bg-gray-900 p-8 rounded-xl border-2 border-neon-blue shadow-2xl">
+                <form id="registration-form" class="space-y-6">
+                    <div>
+                        <label for="reg-name" class="block text-sm font-medium text-gray-400">Full Name</label>
+                        <input type="text" id="reg-name" name="name" required class="w-full mt-1 neon-input"
+                            placeholder="Your Name">
+                    </div>
+
+                    <div>
+                        <label for="reg-email" class="block text-sm font-medium text-gray-400">Email Address</label>
+                        <input type="email" id="reg-email" name="email" required class="w-full mt-1 neon-input"
+                            placeholder="you@example.com">
+                    </div>
+
+                    <div>
+                        <label for="reg-contact" class="block text-sm font-medium text-gray-400">Contact
+                            Number</label>
+                        <input type="tel" id="reg-contact" name="contact" required class="w-full mt-1 neon-input"
+                            placeholder="+92 300 0000000">
+                    </div>
+
+                    <div>
+                        <label for="reg-program" class="block text-sm font-medium text-gray-400">Program</label>
+                        <input type="text" id="reg-program" name="program" required class="w-full mt-1 neon-input"
+                            placeholder="BS Computer Science">
+                    </div>
+
+                    <div>
+                        <label for="reg-semester" class="block text-sm font-medium text-gray-400">Semester</label>
+                        <input type="text" id="reg-semester" name="semester" required class="w-full mt-1 neon-input"
+                            placeholder="6th Semester">
+                    </div>
+
+                    <div>
+                        <label for="reg-roll" class="block text-sm font-medium text-gray-400">Student-ID</label>
+                        <input type="text" id="reg-roll" name="rollno" required class="w-full mt-1 neon-input"
+                            placeholder="CS-1234">
+                    </div>
+
+                    <div>
+                        <label for="reg-event" class="block text-sm font-medium text-gray-400">Select Event</label>
+                        <select id="reg-event" name="event" required class="w-full mt-1 neon-input appearance-none">
+                            <option value="">-- Choose an event --</option>
+                            <option value="speed-programming">Speed Programming (Fee: 200)</option>
+                            <option value="web-development">Web Development (Fee: 200)</option>
+                            <option value="pitch-your-idea">Pitch Your Idea (Fee: 1000)</option>
+                            <option value="ctf">Capture the Flag (Fee: 200)</option>
+                            <option value="data-insights">Data Driven Insights (Fee: 200)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="reg-team" class="block text-sm font-medium text-gray-400">Team Name
+                            (Optional)</label>
+                        <input type="text" id="reg-team" name="team" class="w-full mt-1 neon-input"
+                            placeholder="Cyber Warriors">
+                    </div>
+
+                    <button type="submit"
+                        class="w-full py-2 rounded-lg font-semibold neon-button hover:bg-neon-blue hover:text-dark-bg transition duration-300">
+                        Submit Registration
+                    </button>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="mt-12 py-6 text-center text-gray-500 text-sm border-t border-neon-blue border-opacity-30">
+        <p>&copy; 2025 Teknofest. Powered by Future Tech.</p>
+    </footer>
+
+    <script>
+        // NOTIFICATION MODAL
+        function showNotification(title, message, isSuccess = true) {
+            const modal = document.getElementById('notification-modal');
+            const titleEl = document.getElementById('notification-title');
+            const messageEl = document.getElementById('notification-message');
+
+            if (!modal) return;
+
+            titleEl.textContent = title;
+            messageEl.innerHTML = message;
+
+            const modalContent = modal.querySelector('div');
+            modalContent.classList.remove('border-neon-green', 'border-red-500');
+            titleEl.classList.remove('neon-text-green', 'text-red-500');
+
+            if (isSuccess) {
+                modalContent.classList.add('border-neon-green');
+                titleEl.classList.add('neon-text-green');
+            } else {
+                modalContent.classList.add('border-red-500');
+                titleEl.classList.add('text-red-500');
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        function closeNotification() {
+            const modal = document.getElementById('notification-modal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        // PAGE NAVIGATION
+        const pages = ['home', 'about', 'events', 'schedule', 'sponsors', 'blog', 'register'];
+        let currentPage = 'home';
+        window.userId = 'CLIENT-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+
+        function navigate(pageId) {
+            pages.forEach(id => {
+                const sec = document.getElementById(`${id}-page`);
+                if (sec) {
+                    if (id === pageId) {
+                        sec.classList.remove('hidden-section');
+                    } else {
+                        sec.classList.add('hidden-section');
+                    }
+                }
+            });
+
+            currentPage = pageId;
+
+            const search = document.getElementById('search-input');
+            if (search) search.value = '';
+        }
+
+        // REGISTRATION HANDLER
+        async function handleRegistration(event) {
+            event.preventDefault();
+
+            const form = event.target;
+
+            const data = {
+                name: form['name'].value.trim(),
+                email: form['email'].value.trim(),
+                contact: form['contact'].value.trim(),
+                program: form['program'].value.trim(),
+                semester: form['semester'].value.trim(),
+                rollno: form['rollno'].value.trim(),
+                event: form['event'].value,
+                team: form['team'].value.trim() || null,
+                userId: window.userId
+            };
+
+            // Required validation
+            for (const key in data) {
+                if (!data[key] && key !== 'team') {
+                    return showNotification(
+                        'Missing Fields ⚠️',
+                        'Please complete all required fields.',
+                        false
+                    );
+                }
+            }
+
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const res = await response.json();
+
+                if (response.ok) {
+                    showNotification(
+                        'Registration Successful 🎉',
+                        `Thank you, <b>${data.name}</b>. You are registered for <b>${res.eventName}</b>.`,
+                        true
+                    );
+                    form.reset();
+                } else {
+                    showNotification(
+                        `Registration Failed ❌`,
+                        res.error || res.message || 'An unknown server error occurred.',
+                        false
+                    );
+                }
+            } catch (err) {
+                console.error(err);
+                showNotification(
+                    'Network Error 🔌',
+                    'Unable to contact the server. Make sure the backend is running.',
+                    false
+                );
+            }
+        }
+
+        // AUTO-SELECT EVENT IN FORM
+        function selectEvent(eventId) {
+            const select = document.getElementById('reg-event');
+            if (select) select.value = eventId;
+        }
+
+        // INITIALIZE APP
+        window.onload = () => {
+            const idBox = document.getElementById('user-id-display');
+            if (idBox) idBox.textContent = `Client ID: ${window.userId}`;
+
+            // Show home page by default
+            navigate('home');
+
+            const regForm = document.getElementById('registration-form');
+            if (regForm) regForm.addEventListener('submit', handleRegistration);
+        };
+
+    </script>
+</body>
+
+</html>
