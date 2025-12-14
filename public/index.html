@@ -461,11 +461,19 @@
         /* 3D Hero Solar System - Refined */
         .hero-3d-container {
             position: relative;
-            width: 300px;
-            height: 300px;
+            width: 260px;
+            /* Mobile Default */
+            height: 260px;
             margin: 0 auto 50px auto;
             perspective: 1200px;
             transform-style: preserve-3d;
+        }
+
+        @media (min-width: 768px) {
+            .hero-3d-container {
+                width: 300px;
+                height: 300px;
+            }
         }
 
         /* Faded Background Logo */
@@ -882,9 +890,15 @@
 
                 <div class="flex-shrink-0 flex items-center gap-4">
                     <!-- Department Logo (Far Left) -->
-                    <a href="#" onclick="navigate('home')" class="block">
-                        <img src="images/Department of Info Tech.svg" class="dept-logo" alt="Department of Info Tech">
-                    </a>
+                    <div class="flex items-center gap-3">
+                        <a href="#" onclick="navigate('home')" class="block">
+                            <img src="images/Department of Info Tech.svg" class="dept-logo"
+                                alt="Department of Info Tech">
+                        </a>
+                        <!-- Fatima Jinnah Logo (Navbar) -->
+                        <img src="images/fatima.jpeg" class="dept-logo rounded-full border border-sky-500/50"
+                            alt="Fatima Jinnah" style="width: 42px; height: 42px; object-fit: cover;">
+                    </div>
 
                     <!-- Divider -->
                     <div
@@ -1016,7 +1030,7 @@
                 </p>
                 <div class="text-center mb-12 relative z-10">
                     <h2
-                        class="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 mb-4 filter drop-shadow-[0_0_10px_rgba(56,189,248,0.5)] tracking-tight">
+                        class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 mb-4 filter drop-shadow-[0_0_10px_rgba(56,189,248,0.5)] tracking-tight">
                         ELITE COMPETITIONS
                     </h2>
                     <div class="h-1 w-32 bg-cyan-500 mx-auto rounded-full shadow-[0_0_15px_#22d3ee] mb-6"></div>
@@ -1025,7 +1039,7 @@
                             future.</span>
                     </p>
                 </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <!-- Speed Programming -->
                     <div class="asteroid-card group">
                         <div class="card-image-container">
@@ -1228,9 +1242,10 @@
 
                 <!-- Organizers & Partners -->
                 <!-- Organizers & Partners -->
-                <h3 class="text-4xl font-bold neon-text-green mb-6 border-t pt-8 border-neon-blue">Our Organizers &
+                <h3 class="text-3xl md:text-4xl font-bold neon-text-green mb-6 border-t pt-8 border-neon-blue">Our
+                    Organizers &
                     Partners</h3>
-                <div class="grid md:grid-cols-4 lg:grid-cols-6 gap-8 justify-center">
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 md:gap-8 justify-center">
                     <!-- CS Department (Organizer) -->
                     <div class="heavenly-card group">
                         <img src="images/Department of Info Tech.svg" alt="Dept of CS"
@@ -1239,15 +1254,6 @@
                         </p>
                         <span class="text-xs text-blue-300 mt-2 opacity-0 group-hover:opacity-100 transition">Main
                             Organizer</span>
-                    </div>
-                    <!-- Fatima Jinnah (Organizer) -->
-                    <div class="heavenly-card group">
-                        <img src="images/fatima.jpeg" alt="Fatima Jinnah"
-                            style="border-radius: 50%; object-fit: cover;">
-                        <p class="text-xl font-bold neon-text-green mt-4 group-hover:text-white transition">Fatima
-                            Jinnah</p>
-                        <span
-                            class="text-xs text-blue-300 mt-2 opacity-0 group-hover:opacity-100 transition">Organizer</span>
                     </div>
 
                     <!-- ACM -->
