@@ -704,10 +704,140 @@
             color: var(--neon-green);
             border-left-color: var(--neon-green);
         }
+
+        border-left-color: var(--neon-green);
+        }
+
+        /* Loading Screen Styles */
+        #loading-screen {
+            position: fixed;
+            inset: 0;
+            background-color: #000;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease-out;
+        }
+
+        .black-hole-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .black-hole {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle, #000 40%, #000 60%, transparent 70%);
+            box-shadow: 0 0 50px rgba(56, 189, 248, 0.5), inset 0 0 40px rgba(100, 100, 255, 0.8);
+            z-index: 10;
+        }
+
+        .accretion-disk {
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, transparent 0%, #38bdf8 20%, #60a5fa 40%, transparent 60%);
+            animation: spin-disk 1s linear infinite;
+            filter: blur(8px);
+            z-index: 5;
+        }
+
+        .accretion-disk-2 {
+            position: absolute;
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-top: 2px solid #fff;
+            animation: spin-disk 2s linear infinite reverse;
+            filter: blur(1px);
+            z-index: 6;
+        }
+
+        @keyframes spin-disk {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loader-logo {
+            position: absolute;
+            width: 100px;
+            height: auto;
+            z-index: 20;
+            filter: drop-shadow(0 0 10px #38bdf8);
+            animation: pulse-logo 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-logo {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(0.9);
+                opacity: 0.8;
+            }
+        }
+
+        .loading-text {
+            margin-top: 2rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.5rem;
+            color: #fff;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            animation: fade-text 2s infinite;
+        }
+
+        @keyframes fade-text {
+
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* Optimize rendering */
+        * {
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
     </style>
 </head>
 
-<body class="min-h-screen">
+<body class="min-h-screen overflow-hidden">
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="black-hole-container">
+            <div class="accretion-disk"></div>
+            <div class="accretion-disk-2"></div>
+            <div class="black-hole"></div>
+            <img src="images/Technofest.png" alt="Teknofest" class="loader-logo">
+        </div>
+        <div class="loading-text">Initializing Cosmos...</div>
+    </div>
 
     <!-- Notification Modal Structure -->
     <div id="notification-modal"
@@ -722,8 +852,8 @@
 
 
     <!-- Navigation Bar -->
-    <nav
-        class="fixed top-0 left-0 right-0 w-full z-50 bg-black bg-opacity-90 shadow-lg border-b border-opacity-30 border-neon-blue">
+    <nav class="fixed top-0 left-0 right-0 w-full z-50 bg-black bg-opacity-90 shadow-lg border-b border-opacity-30 border-neon-blue transition-transform duration-300 transform -translate-y-full"
+        id="main-navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
 
@@ -1748,9 +1878,11 @@
         }
 
         // INITIALIZE APP
+        // INITIALIZE APP
         window.onload = () => {
+            // Remove Client ID display code
             const idBox = document.getElementById('user-id-display');
-            if (idBox) idBox.textContent = `Client ID: ${window.userId}`;
+            if (idBox) idBox.style.display = 'none';
 
             // Mobile Menu Toggle
             const mobileBtn = document.getElementById('mobile-menu-btn');
@@ -1763,6 +1895,22 @@
 
             const regForm = document.getElementById('registration-form');
             if (regForm) regForm.addEventListener('submit', handleRegistration);
+
+            // Hide Loading Screen with delay for smoothness
+            setTimeout(() => {
+                const loader = document.getElementById('loading-screen');
+                const navbar = document.getElementById('main-navbar');
+
+                if (loader) {
+                    loader.style.opacity = '0';
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                        document.body.classList.remove('overflow-hidden'); // Enable scrolling
+                        // Slide in navbar
+                        if (navbar) navbar.classList.remove('-translate-y-full');
+                    }, 800);
+                }
+            }, 2500); // 2.5s simulated loading time
         };
 
     </script>
