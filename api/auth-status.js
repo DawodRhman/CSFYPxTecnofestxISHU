@@ -1,3 +1,5 @@
+const { verifyToken } = require('../lib/jwt-auth');
+
 module.exports = async (req, res) => {
     // Handle CORS preflight
     if (req.method === 'OPTIONS') {
@@ -13,31 +15,25 @@ module.exports = async (req, res) => {
         return;
     }
 
-    // Parse cookies manually for Vercel
-    let sessionId = null;
-    if (req.cookies && req.cookies.admin_session) {
-        sessionId = req.cookies.admin_session;
+    // Parse token from cookie
+    let token = null;
+    if (req.cookies && req.cookies.admin_token) {
+        token = req.cookies.admin_token;
     } else if (req.headers.cookie) {
-        const match = req.headers.cookie.match(/admin_session=([^;]+)/);
+        const match = req.headers.cookie.match(/admin_token=([^;]+)/);
         if (match) {
-            sessionId = match[1];
+            token = match[1];
         }
     }
     
-    // Initialize sessions if not exists
-    if (!global.sessions) {
-        global.sessions = new Map();
-    }
-    
-    if (!sessionId) {
+    if (!token) {
         res.setHeader('Access-Control-Allow-Credentials', 'true');
         res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
         return res.json({ authenticated: false });
     }
     
-    const session = global.sessions.get(sessionId);
-    if (!session || Date.now() > session.expiresAt) {
-        if (session) global.sessions.delete(sessionId);
+    const decoded = verifyToken(token);
+    if (!decoded || decoded.type !== 'admin') {
         res.setHeader('Access-Control-Allow-Credentials', 'true');
         res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
         return res.json({ authenticated: false });
@@ -45,6 +41,6 @@ module.exports = async (req, res) => {
     
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
-    res.json({ authenticated: true, username: session.username });
+    res.json({ authenticated: true, username: decoded.username });
 };
 

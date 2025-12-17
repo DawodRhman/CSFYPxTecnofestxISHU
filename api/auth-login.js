@@ -1,62 +1,12 @@
 const bcrypt = require('bcrypt');
-
-// Admin credentials
-const ADMIN_USERNAME = 'iamadmin';
-const ADMIN_PASSWORD_HASH = bcrypt.hashSync('tecknofest1@1', 10);
-
-// Simple in-memory store (for serverless, consider using external storage)
-// In production, use Redis or database
-if (!global.loginAttempts) {
-    global.loginAttempts = new Map();
-    global.sessions = new Map();
-}
-
-const MAX_LOGIN_ATTEMPTS = 5;
-const LOGIN_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
-const LOCKOUT_DURATION = 30 * 60 * 1000; // 30 minutes
-
-function generateSessionId() {
-    return require('crypto').randomBytes(32).toString('hex');
-}
-
-function isLockedOut(ip) {
-    const attempts = global.loginAttempts.get(ip);
-    if (!attempts) return false;
-    
-    if (attempts.lockedUntil && Date.now() < attempts.lockedUntil) {
-        return true;
-    }
-    
-    if (attempts.lockedUntil && Date.now() >= attempts.lockedUntil) {
-        global.loginAttempts.delete(ip);
-        return false;
-    }
-    
-    return false;
-}
-
-function recordFailedAttempt(ip) {
-    const attempts = global.loginAttempts.get(ip) || { count: 0, firstAttempt: Date.now() };
-    attempts.count++;
-    
-    if (attempts.count >= MAX_LOGIN_ATTEMPTS) {
-        attempts.lockedUntil = Date.now() + LOCKOUT_DURATION;
-        global.loginAttempts.set(ip, attempts);
-        return true;
-    }
-    
-    if (Date.now() - attempts.firstAttempt > LOGIN_WINDOW_MS) {
-        attempts.count = 1;
-        attempts.firstAttempt = Date.now();
-    }
-    
-    global.loginAttempts.set(ip, attempts);
-    return false;
-}
-
-function resetLoginAttempts(ip) {
-    global.loginAttempts.delete(ip);
-}
+const {
+    ADMIN_USERNAME,
+    ADMIN_PASSWORD_HASH,
+    isLockedOut,
+    recordFailedAttempt,
+    resetLoginAttempts,
+    generateToken
+} = require('../lib/jwt-auth');
 
 module.exports = async (req, res) => {
     // Handle CORS preflight
@@ -131,20 +81,16 @@ module.exports = async (req, res) => {
     }
     
     resetLoginAttempts(ip);
-    const sessionId = generateSessionId();
-    global.sessions.set(sessionId, {
-        username: ADMIN_USERNAME,
-        createdAt: Date.now(),
-        expiresAt: Date.now() + (24 * 60 * 60 * 1000)
-    });
     
-    console.log('Login successful - Session ID:', sessionId);
-    console.log('Sessions map size:', global.sessions.size);
+    // Generate JWT token
+    const token = generateToken(ADMIN_USERNAME);
+    
+    console.log('Login successful - Token generated');
     
     // Set cookie - For Vercel, use SameSite=None with Secure
     const isVercel = process.env.VERCEL || process.env.VERCEL_ENV;
     const cookieOptions = [
-        `admin_session=${sessionId}`,
+        `admin_token=${token}`,
         'HttpOnly',
         'Secure', // Always secure on Vercel (HTTPS)
         isVercel ? 'SameSite=None' : 'SameSite=Strict',
@@ -154,10 +100,10 @@ module.exports = async (req, res) => {
     res.setHeader('Set-Cookie', cookieOptions);
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
-    console.log('Cookie set:', cookieOptions);
+    console.log('Cookie set with JWT token');
     res.json({ 
         message: 'Login successful.',
-        sessionId: sessionId
+        authenticated: true
     });
 };
 

@@ -13,13 +13,9 @@ module.exports = async (req, res) => {
         return;
     }
 
-    const sessionId = req.cookies?.admin_session || req.headers.cookie?.match(/admin_session=([^;]+)/)?.[1];
-    if (sessionId && global.sessions) {
-        global.sessions.delete(sessionId);
-    }
     const isVercel = process.env.VERCEL || process.env.VERCEL_ENV;
     const cookieOptions = [
-        'admin_session=',
+        'admin_token=',
         'HttpOnly',
         'Secure',
         isVercel ? 'SameSite=None' : 'SameSite=Strict',

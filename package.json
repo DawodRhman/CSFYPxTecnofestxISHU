@@ -19,6 +19,7 @@
     "express-session-file-store": "^1.0.2",
     "formidable": "^3.5.4",
     "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3",
     "multer": "^2.0.2",
     "pg": "^8.16.3",
     "xlsx": "^0.18.5",
