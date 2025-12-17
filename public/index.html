@@ -22,8 +22,8 @@
 
                 const effectiveTheme =
                     (normalizedMode === 'light' || normalizedMode === 'dark') ? normalizedMode :
-                    (normalizedMode === 'system') ? systemTheme :
-                    (legacyTheme ? legacyTheme : systemTheme);
+                        (normalizedMode === 'system') ? systemTheme :
+                            (legacyTheme ? legacyTheme : systemTheme);
 
                 document.documentElement.dataset.theme = effectiveTheme;
             } catch {
@@ -57,15 +57,41 @@
         }
 
         /* Utility classes (Tailwind-like) used in markup */
-        .text-neon-blue { color: var(--neon-primary) !important; }
-        .text-neon-green { color: var(--neon-secondary) !important; }
-        .border-neon-blue { border-color: var(--neon-primary) !important; }
-        .border-neon-green { border-color: var(--neon-secondary) !important; }
-        .bg-neon-blue { background-color: var(--neon-primary) !important; }
-        .bg-neon-green { background-color: var(--neon-secondary) !important; }
-        .hover\:text-neon-blue:hover { color: var(--neon-primary) !important; }
-        .hover\:bg-neon-blue:hover { background-color: var(--neon-primary) !important; }
-        .hover\:text-dark-bg:hover { color: var(--dark-bg) !important; }
+        .text-neon-blue {
+            color: var(--neon-primary) !important;
+        }
+
+        .text-neon-green {
+            color: var(--neon-secondary) !important;
+        }
+
+        .border-neon-blue {
+            border-color: var(--neon-primary) !important;
+        }
+
+        .border-neon-green {
+            border-color: var(--neon-secondary) !important;
+        }
+
+        .bg-neon-blue {
+            background-color: var(--neon-primary) !important;
+        }
+
+        .bg-neon-green {
+            background-color: var(--neon-secondary) !important;
+        }
+
+        .hover\:text-neon-blue:hover {
+            color: var(--neon-primary) !important;
+        }
+
+        .hover\:bg-neon-blue:hover {
+            background-color: var(--neon-primary) !important;
+        }
+
+        .hover\:text-dark-bg:hover {
+            color: var(--dark-bg) !important;
+        }
 
         html[data-theme='light'] {
             --glass-bg: rgba(255, 255, 255, 0.65);
@@ -96,10 +122,21 @@
         }
 
         /* Light theme: make common Tailwind gray text readable */
-        html[data-theme='light'] .text-gray-300 { color: rgb(51 65 85) !important; }
-        html[data-theme='light'] .text-gray-400 { color: rgb(71 85 105) !important; }
-        html[data-theme='light'] .text-gray-500 { color: rgb(100 116 139) !important; }
-        html[data-theme='light'] .text-white { color: rgb(15 23 42) !important; }
+        html[data-theme='light'] .text-gray-300 {
+            color: rgb(51 65 85) !important;
+        }
+
+        html[data-theme='light'] .text-gray-400 {
+            color: rgb(71 85 105) !important;
+        }
+
+        html[data-theme='light'] .text-gray-500 {
+            color: rgb(100 116 139) !important;
+        }
+
+        html[data-theme='light'] .text-white {
+            color: rgb(15 23 42) !important;
+        }
 
         /* Light theme: soften dark panels */
         html[data-theme='light'] .modern-card {
@@ -122,9 +159,17 @@
             color: #0f172a;
         }
 
-        html[data-theme='light'] .bg-gray-800 { background-color: rgba(241, 245, 249, 0.9) !important; }
-        html[data-theme='light'] .bg-gray-700 { background-color: rgba(226, 232, 240, 0.9) !important; }
-        html[data-theme='light'] .border-gray-700 { border-color: rgba(148, 163, 184, 0.7) !important; }
+        html[data-theme='light'] .bg-gray-800 {
+            background-color: rgba(241, 245, 249, 0.9) !important;
+        }
+
+        html[data-theme='light'] .bg-gray-700 {
+            background-color: rgba(226, 232, 240, 0.9) !important;
+        }
+
+        html[data-theme='light'] .border-gray-700 {
+            border-color: rgba(148, 163, 184, 0.7) !important;
+        }
 
         /* Light theme: competitions cards */
         html[data-theme='light'] .asteroid-card {
@@ -1141,10 +1186,8 @@
                 </div>
 
                 <div class="flex items-center gap-3 ml-auto shrink-0">
-                    <button id="theme-toggle"
-                        class="neon-button px-3 py-2 rounded-lg text-sm leading-none"
-                        type="button"
-                        aria-label="Toggle theme">
+                    <button id="theme-toggle" class="neon-button px-3 py-2 rounded-lg text-sm leading-none"
+                        type="button" aria-label="Toggle theme">
                         <i id="theme-toggle-icon" class="fas fa-moon"></i>
                     </button>
 
@@ -1174,26 +1217,27 @@
                 <button onclick="navigate('events')" class="asteroid-nav-button">Events</button>
                 <button onclick="navigate('schedule')" class="asteroid-nav-button">Schedule</button>
                 <button onclick="navigate('blog')" class="asteroid-nav-button">Blog</button>
-                <button onclick="navigate('register')" class="asteroid-nav-button asteroid-nav-button--register">Register Now</button>
+                <button onclick="navigate('register')"
+                    class="asteroid-nav-button asteroid-nav-button--register">Register Now</button>
             </div>
         </div>
 
-        <!-- Mobile Navigation Menu (Hidden by default) -->
+        <!-- Mobile Navigation Menu (Modern Overlay) -->
         <div id="mobile-menu"
-            class="hidden lg:hidden bg-gray-900 border-b border-neon-blue absolute top-full left-0 right-0 z-40 shadow-2xl">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-center">
+            class="hidden lg:hidden fixed top-0 left-0 w-full h-full z-50 bg-black bg-opacity-95 flex flex-col items-center justify-center transition-all duration-300">
+            <div class="w-full max-w-xs mx-auto flex flex-col gap-4 px-4 py-8">
                 <button onclick="navigate('home'); toggleMobileMenu()"
-                    class="block w-full px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 transition">Home</button>
+                    class="w-full py-3 rounded-xl text-lg font-semibold text-gray-100 bg-gray-800 hover:bg-neon-blue hover:text-dark-bg transition">Home</button>
                 <button onclick="navigate('about'); toggleMobileMenu()"
-                    class="block w-full px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 transition">About</button>
+                    class="w-full py-3 rounded-xl text-lg font-semibold text-gray-100 bg-gray-800 hover:bg-neon-blue hover:text-dark-bg transition">About</button>
                 <button onclick="navigate('events'); toggleMobileMenu()"
-                    class="block w-full px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 transition">Events</button>
+                    class="w-full py-3 rounded-xl text-lg font-semibold text-gray-100 bg-gray-800 hover:bg-neon-blue hover:text-dark-bg transition">Events</button>
                 <button onclick="navigate('schedule'); toggleMobileMenu()"
-                    class="block w-full px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 transition">Schedule</button>
+                    class="w-full py-3 rounded-xl text-lg font-semibold text-gray-100 bg-gray-800 hover:bg-neon-blue hover:text-dark-bg transition">Schedule</button>
                 <button onclick="navigate('blog'); toggleMobileMenu()"
-                    class="block w-full px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 transition">Blog</button>
+                    class="w-full py-3 rounded-xl text-lg font-semibold text-gray-100 bg-gray-800 hover:bg-neon-blue hover:text-dark-bg transition">Blog</button>
                 <button onclick="navigate('register'); toggleMobileMenu()"
-                    class="block w-full px-3 py-2 rounded-md text-base font-bold text-neon-green hover:bg-gray-700 transition mt-2 border border-neon-green">Register
+                    class="w-full py-3 rounded-xl text-lg font-bold text-neon-green border-2 border-neon-green bg-gray-900 hover:bg-neon-green hover:text-dark-bg transition">Register
                     Now</button>
             </div>
         </div>
@@ -1921,6 +1965,13 @@
                     </div>
 
                     <div>
+                        <label for="reg-cnic-student-card" class="block text-sm font-medium text-gray-400">CNIC or
+                            Student Card (Front)</label>
+                        <input type="file" id="reg-cnic-student-card" name="cnicOrStudentCard"
+                            accept="image/*,application/pdf" required class="w-full mt-1 neon-input">
+                    </div>
+
+                    <div>
                         <label for="reg-email" class="block text-sm font-medium text-gray-400">Email Address</label>
                         <input type="email" id="reg-email" name="email" required class="w-full mt-1 neon-input"
                             placeholder="you@example.com">
@@ -1969,6 +2020,35 @@
                             (Optional)</label>
                         <input type="text" id="reg-team" name="team" class="w-full mt-1 neon-input"
                             placeholder="Cyber Warriors">
+                    </div>
+
+                    <div>
+                        <label for="reg-transaction-id" class="block text-sm font-medium text-gray-400">Transaction
+                            ID</label>
+                        <input type="text" id="reg-transaction-id" name="transactionId" required
+                            class="w-full mt-1 neon-input" placeholder="Transaction ID">
+                    </div>
+
+                    <div>
+                        <label for="reg-account-no" class="block text-sm font-medium text-gray-400">Account No</label>
+                        <input type="text" id="reg-account-no" name="accountNo" required class="w-full mt-1 neon-input"
+                            placeholder="Account Number">
+                    </div>
+
+
+                    <div class="mb-2">
+                        <div class="text-sm font-semibold text-yellow-400 mb-1">
+                            JazzCash Payment Number: <span class="font-mono text-lg text-neon-green">03482245806</span>
+                        </div>
+                        <div class="text-xs font-medium text-gray-300">
+                            Account Title: <span class="text-neon-blue">Daud Rehman</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="reg-payment-slip" class="block text-sm font-medium text-gray-400">Payment Slip
+                            Upload</label>
+                        <input type="file" id="reg-payment-slip" name="paymentSlip" accept="image/*,application/pdf"
+                            required class="w-full mt-1 neon-input">
                     </div>
 
                     <button type="submit"
@@ -2158,22 +2238,31 @@
                 submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
             }
 
-            const data = {
-                name: form['name'].value.trim(),
-                email: form['email'].value.trim(),
-                contact: form['contact'].value.trim(),
-                program: form['program'].value.trim(),
-                semester: form['semester'].value.trim(),
-                rollno: form['rollno'].value.trim(),
-                event: form['event'].value,
-                team: form['team'].value.trim() || null,
-                userId: window.userId
-            };
+            const formData = new FormData();
+            formData.append('name', form['name'].value.trim());
+            formData.append('email', form['email'].value.trim());
+            formData.append('contact', form['contact'].value.trim());
+            formData.append('program', form['program'].value.trim());
+            formData.append('semester', form['semester'].value.trim());
+            formData.append('rollno', form['rollno'].value.trim());
+            formData.append('event', form['event'].value);
+            formData.append('team', form['team'].value.trim() || '');
+            formData.append('userId', window.userId);
+            formData.append('transactionId', form['transactionId'].value.trim());
+            formData.append('accountNo', form['accountNo'].value.trim());
+            if (form['cnicOrStudentCard'].files[0]) {
+                formData.append('cnicOrStudentCard', form['cnicOrStudentCard'].files[0]);
+            }
+            if (form['paymentSlip'].files[0]) {
+                formData.append('paymentSlip', form['paymentSlip'].files[0]);
+            }
 
-            // Required validation
-            for (const key in data) {
-                if (!data[key] && key !== 'team') {
-                    // Re-enable button on validation failure
+            // Required validation (except team, which is optional)
+            const requiredFields = ['name', 'email', 'contact', 'program', 'semester', 'rollno', 'event', 'transactionId', 'accountNo', 'cnicOrStudentCard', 'paymentSlip'];
+            for (const key of requiredFields) {
+                if ((key === 'cnicOrStudentCard' && !form['cnicOrStudentCard'].files[0]) ||
+                    (key === 'paymentSlip' && !form['paymentSlip'].files[0]) ||
+                    (form[key] && !form[key].value.trim())) {
                     if (submitBtn) {
                         submitBtn.disabled = false;
                         submitBtn.textContent = 'Submit Registration';
@@ -2190,8 +2279,7 @@
             try {
                 const response = await fetch('/api/register', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
+                    body: formData
                 });
 
                 const res = await response.json();
@@ -2199,7 +2287,7 @@
                 if (response.ok) {
                     showNotification(
                         'Registration Successful 🎉',
-                        `Thank you, <b>${data.name}</b>. You are registered for <b>${res.eventName}</b>.`,
+                        `Thank you, <b>${form['name'].value.trim()}</b>. You are registered for <b>${res.eventName}</b>.`,
                         true
                     );
                     form.reset();
@@ -2218,7 +2306,6 @@
                     false
                 );
             } finally {
-                // Re-enable button in all cases
                 if (submitBtn) {
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Submit Registration';
@@ -2237,15 +2324,19 @@
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
             const btnIcon = document.querySelector('#mobile-menu-btn i');
-
             if (menu.classList.contains('hidden')) {
                 menu.classList.remove('hidden');
                 btnIcon.classList.remove('fa-bars');
-                btnIcon.classList.add('fa-times');
+                btnIcon.classList.add('fa-xmark');
+                btnIcon.setAttribute('aria-label', 'Close menu');
+                // Trap focus inside menu for accessibility
+                menu.setAttribute('tabindex', '-1');
+                menu.focus();
             } else {
                 menu.classList.add('hidden');
-                btnIcon.classList.remove('fa-times');
+                btnIcon.classList.remove('fa-xmark');
                 btnIcon.classList.add('fa-bars');
+                btnIcon.setAttribute('aria-label', 'Open menu');
             }
         }
 
@@ -2260,6 +2351,20 @@
             const mobileBtn = document.getElementById('mobile-menu-btn');
             if (mobileBtn) {
                 mobileBtn.addEventListener('click', toggleMobileMenu);
+            }
+            // Close mobile menu on navigation
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenu) {
+                mobileMenu.querySelectorAll('button').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        mobileMenu.classList.add('hidden');
+                        const btnIcon = document.querySelector('#mobile-menu-btn i');
+                        if (btnIcon) {
+                            btnIcon.classList.remove('fa-xmark');
+                            btnIcon.classList.add('fa-bars');
+                        }
+                    });
+                });
             }
 
             // Theme toggle
@@ -2300,7 +2405,7 @@
                     const btnIcon = document.querySelector('#mobile-menu-btn i');
                     if (menu) menu.classList.add('hidden');
                     if (btnIcon) {
-                        btnIcon.classList.remove('fa-times');
+                        btnIcon.classList.remove('fa-xmark');
                         btnIcon.classList.add('fa-bars');
                     }
                 }

@@ -1,7 +1,9 @@
 const express = require('express');
-const { Pool } = require('pg');
+const prisma = require('./prisma');
+const multer = require('multer');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const path = require('path');
 
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
@@ -12,13 +14,18 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 
-// PostgreSQL connection setup using Neon DB URL
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false // Required for Neon
+
+// Multer setup for file uploads
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/uploads/');
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, uniqueSuffix + '-' + file.originalname);
     }
 });
+const upload = multer({ storage: storage });
 
 // --- Middleware ---
 // Security Headers
@@ -36,31 +43,19 @@ app.use('/api/register', limiter);
 app.use(cors());
 app.use(express.json());
 
-// Note: Static files are served by Vercel's CDN, not this Express app.
+// Serve static files from the public directory (for local development)
+// Note: In production, static files are served by Vercel's CDN
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
 
-// Function to check/create the 'registrations' table
+// Function to verify database connection
 async function initializeDB() {
     try {
-        // NOTE: The student_id is set as UNIQUE to prevent duplicate entries for one student
-        await pool.query(`
-            CREATE TABLE IF NOT EXISTS registrations (
-                id SERIAL PRIMARY KEY,
-                full_name VARCHAR(255) NOT NULL,
-                email VARCHAR(255) NOT NULL,
-                contact VARCHAR(50),
-                program VARCHAR(100),
-                student_id VARCHAR(50) UNIQUE NOT NULL,
-                semester VARCHAR(50) NOT NULL,
-                event_name VARCHAR(255) NOT NULL,
-                team_name TEXT,
-                registered_by_user_id VARCHAR(50),
-                registration_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-            );
-        `);
-        console.log('Database table "registrations" checked/created successfully.');
+        // Verify Prisma can connect to the database
+        await prisma.$connect();
+        console.log('Database connection established successfully.');
     } catch (err) {
-        console.error('Failed to initialize DB:', err);
+        console.error('Failed to connect to database:', err);
         process.exit(1);
     }
 }
@@ -79,7 +74,10 @@ function mapEventValueToName(eventValue) {
 }
 
 // --- API Route: Registration Endpoint ---
-app.post('/api/register', async (req, res) => {
+app.post('/api/register', upload.fields([
+    { name: 'cnicOrStudentCard', maxCount: 1 },
+    { name: 'paymentSlip', maxCount: 1 }
+]), async (req, res) => {
     console.log('\n=== REGISTRATION REQUEST RECEIVED ===');
     console.log('Request body:', JSON.stringify(req.body, null, 2));
 
@@ -92,76 +90,43 @@ app.post('/api/register', async (req, res) => {
         rollno,
         event,
         team,
-        userId
+        userId,
+        transactionId,
+        accountNo
     } = req.body;
 
-    console.log('Extracted fields:', { name, email, contact, program, semester, rollno, event, team, userId });
+    // File URLs
+    const cnicOrStudentCardUrl = req.files['cnicOrStudentCard'] ? '/uploads/' + req.files['cnicOrStudentCard'][0].filename : null;
+    const paymentSlipUrl = req.files['paymentSlip'] ? '/uploads/' + req.files['paymentSlip'][0].filename : null;
 
-    // Server-side validation
-    if (!name || !email || !rollno || !semester || !event || !contact || !program) {
-        console.log('❌ Validation failed - missing required fields');
-        return res.status(400).json({ error: 'Missing required fields (Name, Email, Student-ID, Semester, Event, Contact, Program).' });
+    // Validation
+    if (!name || !email || !rollno || !semester || !event || !contact || !program || !transactionId || !accountNo || !cnicOrStudentCardUrl || !paymentSlipUrl) {
+        return res.status(400).json({ error: 'Missing required fields.' });
     }
 
-    console.log('✓ Validation passed');
-
-    // Map the short event value to the full name for clean database storage
     const competitionFullName = mapEventValueToName(event);
-    console.log('Mapped event name:', competitionFullName);
 
     try {
-        console.log('Connecting to database...');
-        const client = await pool.connect();
-        console.log('✓ Database connected');
-
-        console.log('Executing INSERT query...');
-        const result = await client.query(
-            `INSERT INTO registrations (full_name, email, contact, program, student_id, semester, event_name, team_name, registered_by_user_id)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-             RETURNING id, full_name, event_name, email`,
-            [
-                name,
-                email,
-                contact,
-                program,
-                rollno,
-                semester,
-                competitionFullName,
-                team,
-                userId
-            ]
-        );
-
-        console.log('✓ INSERT successful, result:', result.rows[0]);
-
-        client.release();
-        console.log('✓ Database connection released');
-
-        const response = {
+        const registration = await prisma.registration.create({
+            data: {
+                cnicOrStudentCard: name, // For compatibility, store name in this field (or adjust as needed)
+                cnicOrStudentCardUrl,
+                transactionId,
+                accountNo,
+                paymentSlipUrl,
+            },
+        });
+        res.status(201).json({
             message: 'Registration successful!',
-            registrationId: result.rows[0].id,
+            registrationId: registration.id,
             eventName: competitionFullName
-        };
-        console.log('Sending success response:', response);
-        res.status(201).json(response);
-        console.log('✓ Response sent');
-
+        });
     } catch (err) {
-        console.log('❌ ERROR CAUGHT:');
-        console.log('Error code:', err.code);
-        console.log('Error message:', err.message);
-        console.log('Full error:', err);
-
-        // Handle unique constraint violation (duplicate student ID)
-        if (err.code === '23505') {
-            console.log('Sending 409 - duplicate student ID');
-            return res.status(409).json({ error: 'A student with this ID is already registered.' });
+        if (err.code === 'P2002') {
+            return res.status(409).json({ error: 'Duplicate registration.' });
         }
-        console.error('Error during registration:', err.message);
-        console.log('Sending 500 - internal server error');
         res.status(500).json({ error: 'Internal Server Error.' });
     }
-    console.log('=== REQUEST COMPLETE ===\n');
 });
 
 
@@ -172,10 +137,18 @@ module.exports = app;
 // Start the server only if running directly (e.g. locally)
 if (require.main === module) {
     initializeDB().then(() => {
-        app.listen(port, () => {
+        const server = app.listen(port, () => {
             console.log(`Server is running on http://localhost:${port}`);
             console.log(`Access the registration form at http://localhost:${port}/index.html`);
         });
+
+        // Keep the server running
+        server.on('error', (err) => {
+            console.error('Server error:', err);
+        });
+    }).catch(err => {
+        console.error("Failed to start server:", err);
+        process.exit(1);
     });
 } else {
     // Ensure DB is initialized when running as a module (e.g. on Vercel)
