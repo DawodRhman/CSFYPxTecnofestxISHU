@@ -130,27 +130,5 @@ app.post('/api/register', upload.fields([
 });
 
 
-// Start the server only after the DB initialization is successful
-// Export the app for Vercel
+// Export the app for Vercel (no server listen)
 module.exports = app;
-
-// Start the server only if running directly (e.g. locally)
-if (require.main === module) {
-    initializeDB().then(() => {
-        const server = app.listen(port, () => {
-            console.log(`Server is running on http://localhost:${port}`);
-            console.log(`Access the registration form at http://localhost:${port}/index.html`);
-        });
-
-        // Keep the server running
-        server.on('error', (err) => {
-            console.error('Server error:', err);
-        });
-    }).catch(err => {
-        console.error("Failed to start server:", err);
-        process.exit(1);
-    });
-} else {
-    // Ensure DB is initialized when running as a module (e.g. on Vercel)
-    initializeDB().catch(err => console.error("DB Init Error:", err));
-}
