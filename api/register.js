@@ -2,6 +2,16 @@
 const prisma = require('../prisma');
 const formidable = require('formidable');
 
+// Check database connection on cold start
+async function checkDbConnection() {
+    try {
+        await prisma.$connect();
+        console.log('✅ Database connection established.');
+    } catch (err) {
+        console.error('❌ Database connection failed:', err);
+    }
+}
+checkDbConnection();
 function mapEventValueToName(eventValue) {
     switch (eventValue) {
         case 'speed-programming': return 'Speed Programming (Fee: 200)';
@@ -24,6 +34,7 @@ module.exports = async (req, res) => {
     const form = new formidable.IncomingForm({ multiples: true });
     form.parse(req, async (err, fields, files) => {
         if (err) {
+            console.error('Form parse error:', err);
             res.status(400).json({ error: 'Error parsing form data.' });
             return;
         }
@@ -54,6 +65,8 @@ module.exports = async (req, res) => {
         const competitionFullName = mapEventValueToName(event);
 
         try {
+            // Check DB connection before insert
+            await prisma.$connect();
             const registration = await prisma.registration.create({
                 data: {
                     cnicOrStudentCard: name,
@@ -69,11 +82,12 @@ module.exports = async (req, res) => {
                 eventName: competitionFullName
             });
         } catch (err) {
+            console.error('DB error:', err);
             if (err.code === 'P2002') {
                 res.status(409).json({ error: 'Duplicate registration.' });
                 return;
             }
-            res.status(500).json({ error: 'Internal Server Error.' });
+            res.status(500).json({ error: 'Internal Server Error.', details: err.message });
         }
     });
 };
