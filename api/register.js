@@ -1,6 +1,7 @@
 
 const prisma = require('../lib/prisma');
 const formidable = require('formidable');
+const { put } = require('@vercel/blob');
 
 // Check database connection on cold start
 async function checkDbConnection() {
@@ -66,9 +67,21 @@ module.exports = async (req, res) => {
         const transactionIdVal = Array.isArray(transactionId) ? transactionId[0] : transactionId;
         const accountNoVal = Array.isArray(accountNo) ? accountNo[0] : accountNo;
 
-        // File URLs (simulate, as Vercel serverless cannot write to disk)
-        const cnicOrStudentCardUrl = files.cnicOrStudentCard ? '/uploads/' + files.cnicOrStudentCard.originalFilename : null;
-        const paymentSlipUrl = files.paymentSlip ? '/uploads/' + files.paymentSlip.originalFilename : null;
+        // Upload files to Vercel Blob
+        let cnicOrStudentCardUrl = null;
+        let paymentSlipUrl = null;
+
+        if (files.cnicOrStudentCard) {
+            const file = files.cnicOrStudentCard;
+            const blob = await put(file.originalFilename, file.filepath, { access: 'public' });
+            cnicOrStudentCardUrl = blob.url;
+        }
+
+        if (files.paymentSlip) {
+            const file = files.paymentSlip;
+            const blob = await put(file.originalFilename, file.filepath, { access: 'public' });
+            paymentSlipUrl = blob.url;
+        }
 
         if (!nameVal || !emailVal || !rollnoVal || !semesterVal || !eventVal || !contactVal || !programVal || !transactionIdVal || !accountNoVal || !cnicOrStudentCardUrl || !paymentSlipUrl) {
             res.status(400).json({ error: 'Missing required fields.' });
