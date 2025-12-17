@@ -34,17 +34,13 @@ module.exports = async (req, res) => {
                 paymentSlipUrl: true,
             }
         });
-        
+
         const registrationsWithImages = registrations.map(reg => ({
             ...reg,
-            cnicOrStudentCardUrl: reg.cnicOrStudentCardUrl 
-                ? `data:image/jpeg;base64,${reg.cnicOrStudentCardUrl.toString('base64')}`
-                : null,
-            paymentSlipUrl: reg.paymentSlipUrl 
-                ? `data:image/jpeg;base64,${reg.paymentSlipUrl.toString('base64')}`
-                : null,
+            cnicOrStudentCardUrl: reg.cnicOrStudentCardUrl ? true : false,
+            paymentSlipUrl: reg.paymentSlipUrl ? true : false,
         }));
-        
+
         res.setHeader('Access-Control-Allow-Credentials', 'true');
         res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
         res.json(registrationsWithImages);

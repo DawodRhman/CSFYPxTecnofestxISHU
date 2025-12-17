@@ -267,38 +267,56 @@
                     return;
                 }
                 
+                // Group registrations by event
+                const grouped = registrations.reduce((acc, reg) => {
+                    if (!acc[reg.event]) {
+                        acc[reg.event] = [];
+                    }
+                    acc[reg.event].push(reg);
+                    return acc;
+                }, {});
+                
                 const container = document.getElementById('registrations');
-                container.innerHTML = registrations.map(reg => `
-                    <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
-                        <h3 class="text-xl font-bold mb-4 text-cyan-400">${reg.name}</h3>
-                        <div class="space-y-2 text-sm mb-4">
-                            <p><span class="text-gray-400">Email:</span> ${reg.email}</p>
-                            <p><span class="text-gray-400">Contact:</span> ${reg.contact}</p>
-                            <p><span class="text-gray-400">Program:</span> ${reg.program}</p>
-                            <p><span class="text-gray-400">Semester:</span> ${reg.semester}</p>
-                            <p><span class="text-gray-400">Roll No:</span> ${reg.rollno}</p>
-                            <p><span class="text-gray-400">Event:</span> ${reg.event}</p>
-                            ${reg.team ? `<p><span class="text-gray-400">Team:</span> ${reg.team}</p>` : ''}
-                            <p><span class="text-gray-400">Transaction ID:</span> ${reg.transactionId}</p>
-                            <p><span class="text-gray-400">Account No:</span> ${reg.accountNo}</p>
-                            <p class="text-xs text-gray-500">Registered: ${new Date(reg.createdAt).toLocaleString()}</p>
-                        </div>
-                        
-                        <div class="mt-4 space-y-3">
-                            <div>
-                                <p class="text-sm font-semibold mb-2 text-yellow-400">CNIC/Student Card:</p>
-                                ${reg.cnicOrStudentCardUrl 
-                                    ? `<img src="${reg.cnicOrStudentCardUrl}" alt="CNIC/Student Card" class="w-full rounded border border-gray-600 max-h-48 object-contain bg-gray-900 cursor-pointer" onclick="window.open('${reg.cnicOrStudentCardUrl}', '_blank')">`
-                                    : '<p class="text-gray-500 text-sm">No image available</p>'
-                                }
-                            </div>
-                            <div>
-                                <p class="text-sm font-semibold mb-2 text-yellow-400">Payment Slip:</p>
-                                ${reg.paymentSlipUrl 
-                                    ? `<img src="${reg.paymentSlipUrl}" alt="Payment Slip" class="w-full rounded border border-gray-600 max-h-48 object-contain bg-gray-900 cursor-pointer" onclick="window.open('${reg.paymentSlipUrl}', '_blank')">`
-                                    : '<p class="text-gray-500 text-sm">No image available</p>'
-                                }
-                            </div>
+                container.innerHTML = Object.keys(grouped).map(event => `
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold mb-4 text-cyan-400 border-b border-gray-700 pb-2">${event}</h2>
+                        <div class="space-y-4">
+                            ${grouped[event].map(reg => `
+                                <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                        <div class="space-y-2">
+                                            <h3 class="text-lg font-bold text-cyan-300">${reg.name}</h3>
+                                            <p><span class="text-gray-400">Email:</span> ${reg.email}</p>
+                                            <p><span class="text-gray-400">Contact:</span> ${reg.contact}</p>
+                                            <p><span class="text-gray-400">Program:</span> ${reg.program}</p>
+                                            <p><span class="text-gray-400">Semester:</span> ${reg.semester}</p>
+                                            <p><span class="text-gray-400">Roll No:</span> ${reg.rollno}</p>
+                                            ${reg.team ? `<p><span class="text-gray-400">Team:</span> ${reg.team}</p>` : ''}
+                                            <p><span class="text-gray-400">Transaction ID:</span> ${reg.transactionId}</p>
+                                            <p><span class="text-gray-400">Account No:</span> ${reg.accountNo}</p>
+                                            <p class="text-xs text-gray-500">Registered: ${new Date(reg.createdAt).toLocaleString()}</p>
+                                        </div>
+                                        <div class="space-y-3">
+                                            <div>
+                                                <p class="text-sm font-semibold mb-2 text-yellow-400">CNIC/Student Card:</p>
+                                                ${reg.cnicOrStudentCardUrl 
+                                                    ? `<img src="/api/image?id=${reg.id}&type=cnic" alt="CNIC/Student Card" class="w-full rounded border border-gray-600 max-h-32 object-contain bg-gray-900 cursor-pointer" onclick="window.open('/api/image?id=${reg.id}&type=cnic', '_blank')" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'"><p class="text-gray-500 text-sm hidden">No image available</p>`
+                                                    : '<p class="text-gray-500 text-sm">No image available</p>'
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="space-y-3">
+                                            <div>
+                                                <p class="text-sm font-semibold mb-2 text-yellow-400">Payment Slip:</p>
+                                                ${reg.paymentSlipUrl 
+                                                    ? `<img src="/api/image?id=${reg.id}&type=payment" alt="Payment Slip" class="w-full rounded border border-gray-600 max-h-32 object-contain bg-gray-900 cursor-pointer" onclick="window.open('/api/image?id=${reg.id}&type=payment', '_blank')" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'"><p class="text-gray-500 text-sm hidden">No image available</p>`
+                                                    : '<p class="text-gray-500 text-sm">No image available</p>'
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
                         </div>
                     </div>
                 `).join('');
