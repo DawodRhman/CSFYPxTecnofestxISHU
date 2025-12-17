@@ -11,7 +11,15 @@ datasource db {
 
 model Registration {
   id                Int      @id @default(autoincrement())
-  cnicOrStudentCard String
+  name              String
+  email             String
+  contact           String
+  program           String
+  semester          String
+  rollno            String
+  event             String
+  team              String?
+  userId            String?
   cnicOrStudentCardUrl String
   transactionId     String
   accountNo         String

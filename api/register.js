@@ -69,7 +69,15 @@ module.exports = async (req, res) => {
             await prisma.$connect();
             const registration = await prisma.registration.create({
                 data: {
-                    cnicOrStudentCard: name,
+                    name,
+                    email,
+                    contact,
+                    program,
+                    semester,
+                    rollno,
+                    event,
+                    team,
+                    userId,
                     cnicOrStudentCardUrl,
                     transactionId,
                     accountNo,
