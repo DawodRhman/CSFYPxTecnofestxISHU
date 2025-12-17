@@ -1,5 +1,5 @@
 
-const prisma = require('../prisma');
+const prisma = require('../lib/prisma');
 const formidable = require('formidable');
 
 // Check database connection on cold start
