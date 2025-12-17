@@ -1969,6 +1969,11 @@
                             Student Card (Front)</label>
                         <input type="file" id="reg-cnic-student-card" name="cnicOrStudentCard"
                             accept="image/*,application/pdf" required class="w-full mt-1 neon-input">
+                        <div id="cnic-preview" class="mt-2 hidden">
+                            <img id="cnic-preview-img"
+                                class="max-w-full h-32 object-contain border border-gray-600 rounded"
+                                alt="CNIC Preview">
+                        </div>
                     </div>
 
                     <div>
@@ -2049,6 +2054,11 @@
                             Upload</label>
                         <input type="file" id="reg-payment-slip" name="paymentSlip" accept="image/*,application/pdf"
                             required class="w-full mt-1 neon-input">
+                        <div id="payment-preview" class="mt-2 hidden">
+                            <img id="payment-preview-img"
+                                class="max-w-full h-32 object-contain border border-gray-600 rounded"
+                                alt="Payment Slip Preview">
+                        </div>
                     </div>
 
                     <button type="submit"
@@ -2416,8 +2426,54 @@
             // Show home page by default
             navigate('home');
 
+            // Image preview functionality
+            const cnicInput = document.getElementById('reg-cnic-student-card');
+            const paymentInput = document.getElementById('reg-payment-slip');
+            const cnicPreview = document.getElementById('cnic-preview');
+            const paymentPreview = document.getElementById('payment-preview');
+            const cnicImg = document.getElementById('cnic-preview-img');
+            const paymentImg = document.getElementById('payment-preview-img');
+
+            if (cnicInput) {
+                cnicInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file && file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            cnicImg.src = e.target.result;
+                            cnicPreview.classList.remove('hidden');
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        cnicPreview.classList.add('hidden');
+                    }
+                });
+            }
+
+            if (paymentInput) {
+                paymentInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file && file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            paymentImg.src = e.target.result;
+                            paymentPreview.classList.remove('hidden');
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        paymentPreview.classList.add('hidden');
+                    }
+                });
+            }
+
             const regForm = document.getElementById('registration-form');
-            if (regForm) regForm.addEventListener('submit', handleRegistration);
+            if (regForm) {
+                regForm.addEventListener('submit', handleRegistration);
+                regForm.addEventListener('reset', () => {
+                    cnicPreview.classList.add('hidden');
+                    paymentPreview.classList.add('hidden');
+                });
+            }
 
             // Hide Loading Screen with delay for smoothness
             setTimeout(() => {
