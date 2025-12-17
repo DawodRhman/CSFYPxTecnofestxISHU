@@ -53,34 +53,47 @@ module.exports = async (req, res) => {
             accountNo
         } = fields;
 
+        // Extract first value from arrays (formidable returns arrays)
+        const nameVal = Array.isArray(name) ? name[0] : name;
+        const emailVal = Array.isArray(email) ? email[0] : email;
+        const contactVal = Array.isArray(contact) ? contact[0] : contact;
+        const programVal = Array.isArray(program) ? program[0] : program;
+        const semesterVal = Array.isArray(semester) ? semester[0] : semester;
+        const rollnoVal = Array.isArray(rollno) ? rollno[0] : rollno;
+        const eventVal = Array.isArray(event) ? event[0] : event;
+        const teamVal = Array.isArray(team) ? team[0] || null : team || null;
+        const userIdVal = Array.isArray(userId) ? userId[0] || null : userId || null;
+        const transactionIdVal = Array.isArray(transactionId) ? transactionId[0] : transactionId;
+        const accountNoVal = Array.isArray(accountNo) ? accountNo[0] : accountNo;
+
         // File URLs (simulate, as Vercel serverless cannot write to disk)
         const cnicOrStudentCardUrl = files.cnicOrStudentCard ? '/uploads/' + files.cnicOrStudentCard.originalFilename : null;
         const paymentSlipUrl = files.paymentSlip ? '/uploads/' + files.paymentSlip.originalFilename : null;
 
-        if (!name || !email || !rollno || !semester || !event || !contact || !program || !transactionId || !accountNo || !cnicOrStudentCardUrl || !paymentSlipUrl) {
+        if (!nameVal || !emailVal || !rollnoVal || !semesterVal || !eventVal || !contactVal || !programVal || !transactionIdVal || !accountNoVal || !cnicOrStudentCardUrl || !paymentSlipUrl) {
             res.status(400).json({ error: 'Missing required fields.' });
             return;
         }
 
-        const competitionFullName = mapEventValueToName(event);
+        const competitionFullName = mapEventValueToName(eventVal);
 
         try {
             // Check DB connection before insert
             await prisma.$connect();
             const registration = await prisma.registration.create({
                 data: {
-                    name,
-                    email,
-                    contact,
-                    program,
-                    semester,
-                    rollno,
-                    event,
-                    team,
-                    userId,
+                    name: nameVal,
+                    email: emailVal,
+                    contact: contactVal,
+                    program: programVal,
+                    semester: semesterVal,
+                    rollno: rollnoVal,
+                    event: eventVal,
+                    team: teamVal,
+                    userId: userIdVal,
                     cnicOrStudentCardUrl,
-                    transactionId,
-                    accountNo,
+                    transactionId: transactionIdVal,
+                    accountNo: accountNoVal,
                     paymentSlipUrl,
                 },
             });
