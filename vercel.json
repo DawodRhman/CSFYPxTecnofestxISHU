@@ -14,6 +14,10 @@
             "destination": "/api/image.js"
         },
         {
+            "source": "/api/export-excel",
+            "destination": "/api/export-excel.js"
+        },
+        {
             "source": "/api/auth/login",
             "destination": "/api/auth-login.js"
         },

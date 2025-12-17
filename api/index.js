@@ -212,6 +212,10 @@ app.get('/api/registration/:id/image/:type', async (req, res) => {
 // --- Authentication Routes ---
 app.use('/api/auth', authRouter);
 
+// --- API Route: Export to Excel ---
+const exportExcel = require('./export-excel-local');
+app.get('/api/export-excel', requireAuth, exportExcel);
+
 // --- API Route: Get All Registrations (for admin/viewing) ---
 app.get('/api/registrations', requireAuth, async (req, res) => {
     try {
@@ -254,6 +258,14 @@ app.get('/api/registrations', requireAuth, async (req, res) => {
     }
 });
 
+
+// Start server for local development
+if (require.main === module) {
+    app.listen(port, () => {
+        console.log(`Server running on http://localhost:${port}`);
+        console.log(`Admin page: http://localhost:${port}/admin.html`);
+    });
+}
 
 // Export the app for Vercel (no server listen)
 module.exports = app;
