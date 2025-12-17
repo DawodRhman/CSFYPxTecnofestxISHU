@@ -90,35 +90,4 @@ module.exports = async (req, res) => {
             res.status(500).json({ error: 'Internal Server Error.', details: err.message });
         }
     });
-};
 
-if (!name || !email || !rollno || !semester || !event || !contact || !program || !transactionId || !accountNo || !cnicOrStudentCardUrl || !paymentSlipUrl) {
-    res.status(400).json({ error: 'Missing required fields.' });
-    return;
-}
-
-const competitionFullName = mapEventValueToName(event);
-
-try {
-    const registration = await prisma.registration.create({
-        data: {
-            cnicOrStudentCard: name,
-            cnicOrStudentCardUrl,
-            transactionId,
-            accountNo,
-            paymentSlipUrl,
-        },
-    });
-    res.status(201).json({
-        message: 'Registration successful!',
-        registrationId: registration.id,
-        eventName: competitionFullName
-    });
-} catch (err) {
-    if (err.code === 'P2002') {
-        res.status(409).json({ error: 'Duplicate registration.' });
-        return;
-    }
-    res.status(500).json({ error: 'Internal Server Error.' });
-}
-};
