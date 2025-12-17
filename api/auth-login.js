@@ -64,6 +64,10 @@ module.exports = async (req, res) => {
         return;
     }
 
+    console.log('Login attempt - Method:', req.method);
+    console.log('Login attempt - Headers:', JSON.stringify(req.headers, null, 2));
+    console.log('Login attempt - Body:', JSON.stringify(req.body, null, 2));
+
     const ip = req.headers['x-forwarded-for']?.split(',')[0] || req.headers['x-real-ip'] || 'unknown';
     
     if (isLockedOut(ip)) {
@@ -74,17 +78,35 @@ module.exports = async (req, res) => {
         });
     }
     
-    const { username, password } = req.body;
+    let body;
+    try {
+        body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+    } catch (e) {
+        return res.status(400).json({ error: 'Invalid request body.' });
+    }
+    
+    const { username, password } = body;
     
     if (!username || !password) {
         recordFailedAttempt(ip);
         return res.status(400).json({ error: 'Username and password are required.' });
     }
     
+    console.log('Username provided:', username);
+    console.log('Username match:', username === ADMIN_USERNAME);
+    
     const usernameMatch = username === ADMIN_USERNAME;
-    const passwordMatch = await bcrypt.compare(password, ADMIN_PASSWORD_HASH);
+    let passwordMatch = false;
+    try {
+        passwordMatch = await bcrypt.compare(password, ADMIN_PASSWORD_HASH);
+        console.log('Password match:', passwordMatch);
+    } catch (e) {
+        console.error('Password comparison error:', e);
+        return res.status(500).json({ error: 'Authentication error.' });
+    }
     
     if (!usernameMatch || !passwordMatch) {
+        console.log('Login failed - Username match:', usernameMatch, 'Password match:', passwordMatch);
         const locked = recordFailedAttempt(ip);
         if (locked) {
             return res.status(429).json({ 
@@ -107,7 +129,21 @@ module.exports = async (req, res) => {
         expiresAt: Date.now() + (24 * 60 * 60 * 1000)
     });
     
-    res.setHeader('Set-Cookie', `admin_session=${sessionId}; HttpOnly; Secure; SameSite=Strict; Max-Age=86400; Path=/`);
+    console.log('Login successful - Session ID:', sessionId);
+    console.log('Sessions map size:', global.sessions.size);
+    
+    // Set cookie - Secure only in production (HTTPS)
+    const isProduction = process.env.NODE_ENV === 'production' || process.env.VERCEL;
+    const cookieOptions = [
+        `admin_session=${sessionId}`,
+        'HttpOnly',
+        isProduction ? 'Secure' : '',
+        'SameSite=Strict',
+        'Max-Age=86400',
+        'Path=/'
+    ].filter(Boolean).join('; ');
+    res.setHeader('Set-Cookie', cookieOptions);
+    console.log('Cookie set:', cookieOptions);
     res.json({ 
         message: 'Login successful.',
         sessionId: sessionId

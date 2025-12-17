@@ -110,9 +110,10 @@ router.post('/login', async (req, res) => {
     
     res.cookie('admin_session', sessionId, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: process.env.NODE_ENV === 'production' || process.env.VERCEL,
         sameSite: 'strict',
-        maxAge: 24 * 60 * 60 * 1000 // 24 hours
+        maxAge: 24 * 60 * 60 * 1000, // 24 hours
+        path: '/'
     });
     
     res.json({ 

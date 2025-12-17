@@ -98,10 +98,21 @@
                     body: JSON.stringify({ username, password })
                 });
                 
-                const data = await response.json();
+                let data;
+                try {
+                    data = await response.json();
+                } catch (e) {
+                    console.error('Failed to parse response:', e);
+                    errorDiv.textContent = 'Server error. Please try again.';
+                    errorDiv.classList.remove('hidden');
+                    return;
+                }
                 
                 if (response.ok) {
-                    checkAuth(); // Reload page state
+                    // Wait a bit for cookie to be set
+                    setTimeout(() => {
+                        checkAuth(); // Reload page state
+                    }, 100);
                 } else {
                     errorDiv.textContent = data.error || 'Login failed';
                     errorDiv.classList.remove('hidden');
@@ -110,7 +121,8 @@
                     }
                 }
             } catch (error) {
-                errorDiv.textContent = 'Network error. Please try again.';
+                console.error('Login error:', error);
+                errorDiv.textContent = 'Network error. Please try again. ' + error.message;
                 errorDiv.classList.remove('hidden');
             } finally {
                 submitBtn.disabled = false;

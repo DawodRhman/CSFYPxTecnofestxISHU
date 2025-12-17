@@ -8,7 +8,16 @@ module.exports = async (req, res) => {
     if (sessionId && global.sessions) {
         global.sessions.delete(sessionId);
     }
-    res.setHeader('Set-Cookie', 'admin_session=; HttpOnly; Secure; SameSite=Strict; Max-Age=0; Path=/');
+    const isProduction = process.env.NODE_ENV === 'production' || process.env.VERCEL;
+    const cookieOptions = [
+        'admin_session=',
+        'HttpOnly',
+        isProduction ? 'Secure' : '',
+        'SameSite=Strict',
+        'Max-Age=0',
+        'Path=/'
+    ].filter(Boolean).join('; ');
+    res.setHeader('Set-Cookie', cookieOptions);
     res.json({ message: 'Logged out successfully.' });
 };
 
