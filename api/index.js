@@ -4,6 +4,7 @@ const multer = require('multer');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
@@ -95,12 +96,22 @@ app.post('/api/register', upload.fields([
         accountNo
     } = req.body;
 
-    // File URLs
-    const cnicOrStudentCardUrl = req.files['cnicOrStudentCard'] ? '/uploads/' + req.files['cnicOrStudentCard'][0].filename : null;
-    const paymentSlipUrl = req.files['paymentSlip'] ? '/uploads/' + req.files['paymentSlip'][0].filename : null;
+    // Read image files as binary data
+    let cnicOrStudentCardData = null;
+    let paymentSlipData = null;
+
+    if (req.files['cnicOrStudentCard']) {
+        const filePath = req.files['cnicOrStudentCard'][0].path;
+        cnicOrStudentCardData = fs.readFileSync(filePath);
+    }
+
+    if (req.files['paymentSlip']) {
+        const filePath = req.files['paymentSlip'][0].path;
+        paymentSlipData = fs.readFileSync(filePath);
+    }
 
     // Validation
-    if (!name || !email || !rollno || !semester || !event || !contact || !program || !transactionId || !accountNo || !cnicOrStudentCardUrl || !paymentSlipUrl) {
+    if (!name || !email || !rollno || !semester || !event || !contact || !program || !transactionId || !accountNo || !cnicOrStudentCardData || !paymentSlipData) {
         return res.status(400).json({ error: 'Missing required fields.' });
     }
 
@@ -109,11 +120,19 @@ app.post('/api/register', upload.fields([
     try {
         const registration = await prisma.registration.create({
             data: {
-                cnicOrStudentCard: name, // For compatibility, store name in this field (or adjust as needed)
-                cnicOrStudentCardUrl,
+                name,
+                email,
+                contact,
+                program,
+                semester,
+                rollno,
+                event: competitionFullName,
+                team: team || null,
+                userId: userId || null,
+                cnicOrStudentCardUrl: cnicOrStudentCardData,
                 transactionId,
                 accountNo,
-                paymentSlipUrl,
+                paymentSlipUrl: paymentSlipData,
             },
         });
         res.status(201).json({
@@ -122,10 +141,11 @@ app.post('/api/register', upload.fields([
             eventName: competitionFullName
         });
     } catch (err) {
+        console.error('Database error:', err);
         if (err.code === 'P2002') {
             return res.status(409).json({ error: 'Duplicate registration.' });
         }
-        res.status(500).json({ error: 'Internal Server Error.' });
+        res.status(500).json({ error: 'Internal Server Error.', details: err.message });
     }
 });
 

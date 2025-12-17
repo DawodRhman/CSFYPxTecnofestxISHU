@@ -1,7 +1,7 @@
 
 const prisma = require('../lib/prisma');
 const formidable = require('formidable');
-const { put } = require('@vercel/blob');
+const fs = require('fs');
 
 // Check database connection on cold start
 async function checkDbConnection() {
@@ -67,23 +67,21 @@ module.exports = async (req, res) => {
         const transactionIdVal = Array.isArray(transactionId) ? transactionId[0] : transactionId;
         const accountNoVal = Array.isArray(accountNo) ? accountNo[0] : accountNo;
 
-        // Upload files to Vercel Blob
-        let cnicOrStudentCardUrl = null;
-        let paymentSlipUrl = null;
+        // Read image files as binary data
+        let cnicOrStudentCardData = null;
+        let paymentSlipData = null;
 
         if (files.cnicOrStudentCard) {
             const file = files.cnicOrStudentCard;
-            const blob = await put(file.originalFilename, file.filepath, { access: 'public' });
-            cnicOrStudentCardUrl = blob.url;
+            cnicOrStudentCardData = fs.readFileSync(file.filepath);
         }
 
         if (files.paymentSlip) {
             const file = files.paymentSlip;
-            const blob = await put(file.originalFilename, file.filepath, { access: 'public' });
-            paymentSlipUrl = blob.url;
+            paymentSlipData = fs.readFileSync(file.filepath);
         }
 
-        if (!nameVal || !emailVal || !rollnoVal || !semesterVal || !eventVal || !contactVal || !programVal || !transactionIdVal || !accountNoVal || !cnicOrStudentCardUrl || !paymentSlipUrl) {
+        if (!nameVal || !emailVal || !rollnoVal || !semesterVal || !eventVal || !contactVal || !programVal || !transactionIdVal || !accountNoVal || !cnicOrStudentCardData || !paymentSlipData) {
             res.status(400).json({ error: 'Missing required fields.' });
             return;
         }
@@ -101,13 +99,13 @@ module.exports = async (req, res) => {
                     program: programVal,
                     semester: semesterVal,
                     rollno: rollnoVal,
-                    event: eventVal,
+                    event: competitionFullName,
                     team: teamVal,
                     userId: userIdVal,
-                    cnicOrStudentCardUrl,
+                    cnicOrStudentCardUrl: cnicOrStudentCardData,
                     transactionId: transactionIdVal,
                     accountNo: accountNoVal,
-                    paymentSlipUrl,
+                    paymentSlipUrl: paymentSlipData,
                 },
             });
             res.status(201).json({

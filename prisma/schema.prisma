@@ -20,9 +20,9 @@ model Registration {
   event             String
   team              String?
   userId            String?
-  cnicOrStudentCardUrl String
+  cnicOrStudentCardUrl Bytes?
   transactionId     String
   accountNo         String
-  paymentSlipUrl    String
+  paymentSlipUrl    Bytes?
   createdAt         DateTime @default(now())
 }
