@@ -32,11 +32,21 @@ module.exports = async (req, res) => {
         return;
     }
 
-    const form = new formidable.IncomingForm({ multiples: true });
+    const form = new formidable.IncomingForm({ 
+        multiples: true,
+        maxFileSize: 5 * 1024 * 1024, // 5MB limit per file
+        maxTotalFileSize: 10 * 1024 * 1024, // 10MB total limit
+        keepExtensions: true
+    });
+    
     form.parse(req, async (err, fields, files) => {
         if (err) {
             console.error('Form parse error:', err);
-            res.status(400).json({ error: 'Error parsing form data.' });
+            if (err.code === 'LIMIT_FILE_SIZE' || err.message.includes('maxFileSize')) {
+                res.status(400).json({ error: 'File size too large. Maximum 5MB per file.' });
+            } else {
+                res.status(400).json({ error: 'Error parsing form data.' });
+            }
             return;
         }
 
@@ -67,19 +77,37 @@ module.exports = async (req, res) => {
         const transactionIdVal = Array.isArray(transactionId) ? transactionId[0] : transactionId;
         const accountNoVal = Array.isArray(accountNo) ? accountNo[0] : accountNo;
 
-        // Read image files as binary data
+        // Read image files as binary data asynchronously (parallel)
         let cnicOrStudentCardData = null;
         let paymentSlipData = null;
 
+        // Read files in parallel for better performance
+        const readPromises = [];
+        
         if (files.cnicOrStudentCard) {
-            const file = files.cnicOrStudentCard;
-            cnicOrStudentCardData = fs.readFileSync(file.filepath);
+            const file = Array.isArray(files.cnicOrStudentCard) ? files.cnicOrStudentCard[0] : files.cnicOrStudentCard;
+            readPromises.push(
+                fs.promises.readFile(file.filepath).then(data => {
+                    cnicOrStudentCardData = data;
+                    // Clean up temp file
+                    return fs.promises.unlink(file.filepath).catch(() => {});
+                })
+            );
         }
 
         if (files.paymentSlip) {
-            const file = files.paymentSlip;
-            paymentSlipData = fs.readFileSync(file.filepath);
+            const file = Array.isArray(files.paymentSlip) ? files.paymentSlip[0] : files.paymentSlip;
+            readPromises.push(
+                fs.promises.readFile(file.filepath).then(data => {
+                    paymentSlipData = data;
+                    // Clean up temp file
+                    return fs.promises.unlink(file.filepath).catch(() => {});
+                })
+            );
         }
+
+        // Wait for all files to be read
+        await Promise.all(readPromises);
 
         if (!nameVal || !emailVal || !rollnoVal || !semesterVal || !eventVal || !contactVal || !programVal || !transactionIdVal || !accountNoVal || !cnicOrStudentCardData || !paymentSlipData) {
             res.status(400).json({ error: 'Missing required fields.' });

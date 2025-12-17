@@ -4,7 +4,6 @@ const multer = require('multer');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const path = require('path');
-const fs = require('fs');
 
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
@@ -16,17 +15,24 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 
-// Multer setup for file uploads
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'public/uploads/');
+// Multer setup for file uploads - using memory storage for better performance
+const storage = multer.memoryStorage();
+const upload = multer({ 
+    storage: storage,
+    limits: {
+        fileSize: 5 * 1024 * 1024, // 5MB limit per file
+        files: 2 // Maximum 2 files
     },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, uniqueSuffix + '-' + file.originalname);
+    fileFilter: (req, file, cb) => {
+        // Accept images and PDFs
+        const allowedMimes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'application/pdf'];
+        if (allowedMimes.includes(file.mimetype)) {
+            cb(null, true);
+        } else {
+            cb(new Error('Invalid file type. Only images and PDFs are allowed.'), false);
+        }
     }
 });
-const upload = multer({ storage: storage });
 
 // --- Middleware ---
 // Security Headers
@@ -75,12 +81,27 @@ function mapEventValueToName(eventValue) {
 }
 
 // --- API Route: Registration Endpoint ---
-app.post('/api/register', upload.fields([
-    { name: 'cnicOrStudentCard', maxCount: 1 },
-    { name: 'paymentSlip', maxCount: 1 }
-]), async (req, res) => {
-    console.log('\n=== REGISTRATION REQUEST RECEIVED ===');
-    console.log('Request body:', JSON.stringify(req.body, null, 2));
+app.post('/api/register', (req, res, next) => {
+    upload.fields([
+        { name: 'cnicOrStudentCard', maxCount: 1 },
+        { name: 'paymentSlip', maxCount: 1 }
+    ])(req, res, (err) => {
+        if (err) {
+            if (err instanceof multer.MulterError) {
+                if (err.code === 'LIMIT_FILE_SIZE') {
+                    return res.status(400).json({ error: 'File size too large. Maximum 5MB per file.' });
+                }
+                return res.status(400).json({ error: 'File upload error: ' + err.message });
+            }
+            return res.status(400).json({ error: err.message || 'File upload error' });
+        }
+        next();
+    });
+}, async (req, res) => {
+    // Handle multer file errors
+    if (!req.files || !req.files['cnicOrStudentCard'] || !req.files['paymentSlip']) {
+        return res.status(400).json({ error: 'Both CNIC/Student Card and Payment Slip files are required.' });
+    }
 
     const {
         name,
@@ -96,19 +117,9 @@ app.post('/api/register', upload.fields([
         accountNo
     } = req.body;
 
-    // Read image files as binary data
-    let cnicOrStudentCardData = null;
-    let paymentSlipData = null;
-
-    if (req.files['cnicOrStudentCard']) {
-        const filePath = req.files['cnicOrStudentCard'][0].path;
-        cnicOrStudentCardData = fs.readFileSync(filePath);
-    }
-
-    if (req.files['paymentSlip']) {
-        const filePath = req.files['paymentSlip'][0].path;
-        paymentSlipData = fs.readFileSync(filePath);
-    }
+    // Get image files from memory (already loaded by multer)
+    const cnicOrStudentCardData = req.files['cnicOrStudentCard']?.[0]?.buffer || null;
+    const paymentSlipData = req.files['paymentSlip']?.[0]?.buffer || null;
 
     // Validation
     if (!name || !email || !rollno || !semester || !event || !contact || !program || !transactionId || !accountNo || !cnicOrStudentCardData || !paymentSlipData) {
