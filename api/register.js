@@ -32,13 +32,13 @@ module.exports = async (req, res) => {
         return;
     }
 
-    const form = new formidable.IncomingForm({ 
+    const form = new formidable.IncomingForm({
         multiples: true,
-        maxFileSize: 5 * 1024 * 1024, // 5MB limit per file
-        maxTotalFileSize: 10 * 1024 * 1024, // 10MB total limit
+        maxFileSize: 10 * 1024 * 1024, // 10MB limit per file
+        maxTotalFileSize: 20 * 1024 * 1024, // 20MB total limit
         keepExtensions: true
     });
-    
+
     form.parse(req, async (err, fields, files) => {
         if (err) {
             console.error('Form parse error:', err);
@@ -83,14 +83,15 @@ module.exports = async (req, res) => {
 
         // Read files in parallel for better performance
         const readPromises = [];
-        
+
         if (files.cnicOrStudentCard) {
             const file = Array.isArray(files.cnicOrStudentCard) ? files.cnicOrStudentCard[0] : files.cnicOrStudentCard;
             readPromises.push(
                 fs.promises.readFile(file.filepath).then(data => {
                     cnicOrStudentCardData = data;
-                    // Clean up temp file
-                    return fs.promises.unlink(file.filepath).catch(() => {});
+                    return fs.promises.unlink(file.filepath).catch(() => { });
+                }).catch(err => {
+                    console.error('Error reading CNIC file:', err);
                 })
             );
         }
@@ -100,8 +101,9 @@ module.exports = async (req, res) => {
             readPromises.push(
                 fs.promises.readFile(file.filepath).then(data => {
                     paymentSlipData = data;
-                    // Clean up temp file
-                    return fs.promises.unlink(file.filepath).catch(() => {});
+                    return fs.promises.unlink(file.filepath).catch(() => { });
+                }).catch(err => {
+                    console.error('Error reading payment file:', err);
                 })
             );
         }
