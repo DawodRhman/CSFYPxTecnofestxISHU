@@ -4,6 +4,26 @@
         {
             "source": "/api/register",
             "destination": "/api/register.js"
+        },
+        {
+            "source": "/api/registrations",
+            "destination": "/api/registrations.js"
+        },
+        {
+            "source": "/api/image",
+            "destination": "/api/image.js"
+        },
+        {
+            "source": "/api/auth/login",
+            "destination": "/api/auth-login.js"
+        },
+        {
+            "source": "/api/auth/logout",
+            "destination": "/api/auth-logout.js"
+        },
+        {
+            "source": "/api/auth/status",
+            "destination": "/api/auth-status.js"
         }
     ],
     "headers": [

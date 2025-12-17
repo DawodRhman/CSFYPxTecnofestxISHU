@@ -4,9 +4,11 @@ const multer = require('multer');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const path = require('path');
+const cookieParser = require('cookie-parser');
 
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const { router: authRouter, requireAuth } = require('./auth');
 
 // Load environment variables from .env file
 dotenv.config();
@@ -47,8 +49,12 @@ const limiter = rateLimit({
 app.use('/api/register', limiter);
 
 // Using CORS allows your local front-end (if running on a different port) to talk to the server
-app.use(cors());
+app.use(cors({
+    origin: true,
+    credentials: true
+}));
 app.use(express.json());
+app.use(cookieParser());
 
 // Serve static files from the public directory (for local development)
 // Note: In production, static files are served by Vercel's CDN
@@ -157,6 +163,94 @@ app.post('/api/register', (req, res, next) => {
             return res.status(409).json({ error: 'Duplicate registration.' });
         }
         res.status(500).json({ error: 'Internal Server Error.', details: err.message });
+    }
+});
+
+// --- API Route: Get Image by Registration ID ---
+app.get('/api/registration/:id/image/:type', async (req, res) => {
+    const { id, type } = req.params;
+    
+    // Validate image type
+    if (type !== 'cnic' && type !== 'payment') {
+        return res.status(400).json({ error: 'Invalid image type. Use "cnic" or "payment".' });
+    }
+    
+    try {
+        const registration = await prisma.registration.findUnique({
+            where: { id: parseInt(id) },
+            select: {
+                cnicOrStudentCardUrl: type === 'cnic',
+                paymentSlipUrl: type === 'payment',
+            }
+        });
+        
+        if (!registration) {
+            return res.status(404).json({ error: 'Registration not found.' });
+        }
+        
+        const imageData = type === 'cnic' 
+            ? registration.cnicOrStudentCardUrl 
+            : registration.paymentSlipUrl;
+        
+        if (!imageData) {
+            return res.status(404).json({ error: 'Image not found for this registration.' });
+        }
+        
+        // Convert Buffer to base64 or send directly
+        // Set appropriate content type
+        res.setHeader('Content-Type', 'image/jpeg'); // Default, can detect from file
+        res.setHeader('Content-Length', imageData.length);
+        res.setHeader('Cache-Control', 'public, max-age=31536000'); // Cache for 1 year
+        res.send(imageData);
+        
+    } catch (err) {
+        console.error('Error retrieving image:', err);
+        res.status(500).json({ error: 'Internal Server Error.' });
+    }
+});
+
+// --- Authentication Routes ---
+app.use('/api/auth', authRouter);
+
+// --- API Route: Get All Registrations (for admin/viewing) ---
+app.get('/api/registrations', requireAuth, async (req, res) => {
+    try {
+        const registrations = await prisma.registration.findMany({
+            orderBy: { createdAt: 'desc' },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                contact: true,
+                program: true,
+                semester: true,
+                rollno: true,
+                event: true,
+                team: true,
+                transactionId: true,
+                accountNo: true,
+                createdAt: true,
+                // Include image URLs (will be base64 encoded for display)
+                cnicOrStudentCardUrl: true,
+                paymentSlipUrl: true,
+            }
+        });
+        
+        // Convert binary data to base64 data URLs for display
+        const registrationsWithImages = registrations.map(reg => ({
+            ...reg,
+            cnicOrStudentCardUrl: reg.cnicOrStudentCardUrl 
+                ? `data:image/jpeg;base64,${reg.cnicOrStudentCardUrl.toString('base64')}`
+                : null,
+            paymentSlipUrl: reg.paymentSlipUrl 
+                ? `data:image/jpeg;base64,${reg.paymentSlipUrl.toString('base64')}`
+                : null,
+        }));
+        
+        res.json(registrationsWithImages);
+    } catch (err) {
+        console.error('Error retrieving registrations:', err);
+        res.status(500).json({ error: 'Internal Server Error.' });
     }
 });
 
