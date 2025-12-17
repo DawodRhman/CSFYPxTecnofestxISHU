@@ -59,6 +59,15 @@ function resetLoginAttempts(ip) {
 }
 
 module.exports = async (req, res) => {
+    // Handle CORS preflight
+    if (req.method === 'OPTIONS') {
+        res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+        res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Cookie');
+        return res.status(200).end();
+    }
+    
     if (req.method !== 'POST') {
         res.status(405).json({ error: 'Method not allowed' });
         return;
@@ -132,17 +141,19 @@ module.exports = async (req, res) => {
     console.log('Login successful - Session ID:', sessionId);
     console.log('Sessions map size:', global.sessions.size);
     
-    // Set cookie - Secure only in production (HTTPS)
-    const isProduction = process.env.NODE_ENV === 'production' || process.env.VERCEL;
+    // Set cookie - For Vercel, use SameSite=None with Secure
+    const isVercel = process.env.VERCEL || process.env.VERCEL_ENV;
     const cookieOptions = [
         `admin_session=${sessionId}`,
         'HttpOnly',
-        isProduction ? 'Secure' : '',
-        'SameSite=Strict',
+        'Secure', // Always secure on Vercel (HTTPS)
+        isVercel ? 'SameSite=None' : 'SameSite=Strict',
         'Max-Age=86400',
         'Path=/'
-    ].filter(Boolean).join('; ');
+    ].join('; ');
     res.setHeader('Set-Cookie', cookieOptions);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
     console.log('Cookie set:', cookieOptions);
     res.json({ 
         message: 'Login successful.',

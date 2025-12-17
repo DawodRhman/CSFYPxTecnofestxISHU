@@ -45,6 +45,8 @@ module.exports = async (req, res) => {
                 : null,
         }));
         
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+        res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
         res.json(registrationsWithImages);
     } catch (err) {
         console.error('Error retrieving registrations:', err);

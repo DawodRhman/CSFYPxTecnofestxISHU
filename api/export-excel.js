@@ -93,6 +93,10 @@ module.exports = async (req, res) => {
         res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
         res.setHeader('Content-Length', excelBuffer.length);
         
+        // Set CORS headers
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+        res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
+        
         // Send Excel file
         res.send(excelBuffer);
         
